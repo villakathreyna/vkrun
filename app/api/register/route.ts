@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
       .from('registrations')
       .select('id, status')
       .eq('email', email)
-      .single();
+      .maybeSingle();
 
     let registration;
     let error;
