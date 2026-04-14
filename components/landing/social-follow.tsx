@@ -39,13 +39,14 @@ export default function SocialFollow() {
                   rel="noopener noreferrer"
                   className="hover:opacity-80 transition-opacity"
                 >
-                  <div className="h-24 relative">
+                  <div className="h-24 w-auto relative flex items-center justify-center">
                     <Image
                       src={sponsor.image}
                       alt={sponsor.name}
                       width={200}
                       height={80}
-                      className="h-full w-auto object-contain"
+                      style={{ width: 'auto', height: '100%' }}
+                      className="object-contain"
                     />
                   </div>
                 </Link>

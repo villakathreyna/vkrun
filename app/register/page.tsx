@@ -83,6 +83,11 @@ export default function RegisterPage() {
       const data = await response.json();
 
       if (!response.ok) {
+        // Check for database setup error
+        if (response.status === 503 && data.message) {
+          setError(`${data.error}: ${data.message}`);
+          return;
+        }
         setError(data.error || 'Registration failed');
         return;
       }
@@ -156,7 +161,16 @@ export default function RegisterPage() {
           <CardContent>
             {error && (
               <Alert variant="destructive" className="mb-6">
-                <AlertDescription>{error}</AlertDescription>
+                <AlertDescription>
+                  {error}
+                  {error.includes('Database not initialized') && (
+                    <div className="mt-3">
+                      <Link href="/setup-db" className="underline font-semibold hover:opacity-80">
+                        Go to database setup →
+                      </Link>
+                    </div>
+                  )}
+                </AlertDescription>
               </Alert>
             )}
 

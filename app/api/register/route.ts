@@ -63,8 +63,21 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       console.error('[v0] Registration error:', error);
+      
+      // Check if it's a missing table error
+      if (error.message && error.message.includes("Could not find the table")) {
+        return NextResponse.json(
+          {
+            error: 'Database not initialized',
+            message: 'Please visit /setup-db to initialize the database first',
+            details: error.message,
+          },
+          { status: 503 }
+        );
+      }
+
       return NextResponse.json(
-        { error: 'Failed to create registration' },
+        { error: 'Failed to create registration', details: error.message },
         { status: 500 }
       );
     }
