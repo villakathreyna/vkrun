@@ -6,8 +6,11 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { firstName, lastName, email, phone, distanceCategory, pricePHP } = body;
 
+    console.log('[REGISTER] Request received:', { email, distanceCategory });
+
     // Validate required fields
     if (!firstName || !lastName || !email || !phone || !distanceCategory || !pricePHP) {
+      console.log('[REGISTER] Missing fields:', { firstName, lastName, email, phone, distanceCategory, pricePHP });
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -16,6 +19,7 @@ export async function POST(request: NextRequest) {
 
     // Validate email format
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      console.log('[REGISTER] Invalid email format:', email);
       return NextResponse.json(
         { error: 'Invalid email format' },
         { status: 400 }
@@ -24,23 +28,29 @@ export async function POST(request: NextRequest) {
 
     // Validate distance category
     if (!['3km', '5km', '10km'].includes(distanceCategory)) {
+      console.log('[REGISTER] Invalid distance category:', distanceCategory);
       return NextResponse.json(
         { error: 'Invalid distance category' },
         { status: 400 }
       );
     }
 
+    console.log('[REGISTER] Creating Supabase client...');
     const supabase = await createClient();
+    console.log('[REGISTER] Supabase client created');
 
     // Check if email already registered
+    console.log('[REGISTER] Checking for existing registration with email:', email);
     const { data: existingRegistration, error: checkError } = await supabase
       .from('registrations')
       .select('id, status')
       .eq('email', email)
       .maybeSingle();
 
+    console.log('[REGISTER] Check result:', { existingRegistration, checkError });
+
     if (checkError) {
-      console.error('[v0] Error checking existing registration:', checkError);
+      console.error('[REGISTER] Error checking existing registration:', checkError);
       if (checkError.message && checkError.message.includes("Could not find the table")) {
         return NextResponse.json(
           {
@@ -61,9 +71,11 @@ export async function POST(request: NextRequest) {
     let error;
 
     if (existingRegistration) {
+      console.log('[REGISTER] Existing registration found, status:', existingRegistration.status);
       // If registration exists but payment is not completed, allow update
       if (existingRegistration.status === 'pending') {
         // Update existing pending registration
+        console.log('[REGISTER] Updating pending registration:', existingRegistration.id);
         const { data: updatedReg, error: updateError } = await supabase
           .from('registrations')
           .update({
@@ -77,10 +89,12 @@ export async function POST(request: NextRequest) {
           .select()
           .single();
 
+        console.log('[REGISTER] Update result:', { updatedReg, updateError });
         registration = updatedReg;
         error = updateError;
       } else {
         // Registration is paid, cannot register again
+        console.log('[REGISTER] Registration already paid, cannot update');
         return NextResponse.json(
           { error: 'Email already registered and payment completed' },
           { status: 409 }
@@ -88,6 +102,7 @@ export async function POST(request: NextRequest) {
       }
     } else {
       // Create new registration
+      console.log('[REGISTER] Creating new registration');
       const { data: newReg, error: insertError } = await supabase
         .from('registrations')
         .insert({
@@ -102,12 +117,13 @@ export async function POST(request: NextRequest) {
         .select()
         .single();
 
+      console.log('[REGISTER] Insert result:', { newReg, insertError });
       registration = newReg;
       error = insertError;
     }
 
     if (error) {
-      console.error('[v0] Registration error:', error);
+      console.error('[REGISTER] Registration error:', error);
       
       // Check if it's a missing table error
       if (error.message && error.message.includes("Could not find the table")) {
@@ -128,13 +144,14 @@ export async function POST(request: NextRequest) {
     }
 
     if (!registration) {
-      console.error('[v0] Registration is null after operation');
+      console.error('[REGISTER] Registration is null after operation');
       return NextResponse.json(
         { error: 'Failed to create registration' },
         { status: 500 }
       );
     }
 
+    console.log('[REGISTER] Success:', registration.id);
     return NextResponse.json({
       id: registration.id,
       email: registration.email,
@@ -143,9 +160,10 @@ export async function POST(request: NextRequest) {
         : 'Registration created successfully. Proceed to payment.',
     });
   } catch (error) {
-    console.error('[v0] API error:', error);
+    console.error('[REGISTER] Catch block - API error:', error);
+    console.error('[REGISTER] Error details:', { name: (error as Error).name, message: (error as Error).message, stack: (error as Error).stack });
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Internal server error', details: (error as Error).message },
       { status: 500 }
     );
   }
