@@ -35,31 +35,58 @@ export async function POST(request: NextRequest) {
     // Check if email already registered
     const { data: existingRegistration } = await supabase
       .from('registrations')
-      .select('id')
+      .select('id, status')
       .eq('email', email)
       .single();
 
-    if (existingRegistration) {
-      return NextResponse.json(
-        { error: 'Email already registered' },
-        { status: 409 }
-      );
-    }
+    let registration;
+    let error;
 
-    // Create registration
-    const { data: registration, error } = await supabase
-      .from('registrations')
-      .insert({
-        first_name: firstName,
-        last_name: lastName,
-        email,
-        phone,
-        distance_category: distanceCategory,
-        price_php: pricePHP,
-        status: 'pending',
-      })
-      .select()
-      .single();
+    if (existingRegistration) {
+      // If registration exists but payment is not completed, allow update
+      if (existingRegistration.status === 'pending') {
+        // Update existing pending registration
+        const { data: updatedReg, error: updateError } = await supabase
+          .from('registrations')
+          .update({
+            first_name: firstName,
+            last_name: lastName,
+            phone,
+            distance_category: distanceCategory,
+            price_php: pricePHP,
+          })
+          .eq('id', existingRegistration.id)
+          .select()
+          .single();
+
+        registration = updatedReg;
+        error = updateError;
+      } else {
+        // Registration is paid, cannot register again
+        return NextResponse.json(
+          { error: 'Email already registered and payment completed' },
+          { status: 409 }
+        );
+      }
+    } else {
+      // Create new registration
+      const { data: newReg, error: insertError } = await supabase
+        .from('registrations')
+        .insert({
+          first_name: firstName,
+          last_name: lastName,
+          email,
+          phone,
+          distance_category: distanceCategory,
+          price_php: pricePHP,
+          status: 'pending',
+        })
+        .select()
+        .single();
+
+      registration = newReg;
+      error = insertError;
+    }
 
     if (error) {
       console.error('[v0] Registration error:', error);
@@ -85,7 +112,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       id: registration.id,
       email: registration.email,
-      message: 'Registration created successfully. Proceed to payment.',
+      message: existingRegistration 
+        ? 'Registration updated successfully. Proceed to payment.'
+        : 'Registration created successfully. Proceed to payment.',
     });
   } catch (error) {
     console.error('[v0] API error:', error);

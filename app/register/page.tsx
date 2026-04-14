@@ -88,11 +88,16 @@ export default function RegisterPage() {
           setError(`${data.error}: ${data.message}`);
           return;
         }
+        // Check for already paid registration
+        if (response.status === 409 && data.error?.includes('payment completed')) {
+          setError('This email has already completed registration and payment. If you need to make changes, please contact us.');
+          return;
+        }
         setError(data.error || 'Registration failed');
         return;
       }
 
-      // Success - move to payment step
+      // Success - move to payment step (either new or updated registration)
       localStorage.setItem('registrationId', data.id);
       setStep(3);
     } catch (err) {
