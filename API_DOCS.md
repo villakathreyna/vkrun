@@ -67,7 +67,6 @@ Submit payment proof for a registration.
 
 **Form Fields:**
 - `registrationId` (string) - Registration UUID
-- `referenceNumber` (string) - Bank/GCash reference
 - `amount` (number) - Payment amount in PHP
 - `email` (string) - Participant email
 - `file` (file) - Payment proof image

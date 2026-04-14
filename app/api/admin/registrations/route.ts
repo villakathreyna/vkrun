@@ -18,6 +18,7 @@ export async function GET(request: NextRequest) {
         team,
         distance_category,
         price_php,
+        finisher_shirt,
         status,
         created_at
       `)

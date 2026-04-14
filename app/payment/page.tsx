@@ -150,6 +150,25 @@ export default function PaymentPage() {
             </CardHeader>
 
             <CardContent>
+                            {/* Show registrant details if available */}
+                            {registrationData && (
+                              <div className="mb-6 p-4 rounded-lg border border-border bg-secondary/10">
+                                <h3 className="font-bold text-lg mb-2">Registrant Details</h3>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+                                  <div><span className="font-semibold">Name:</span> {registrationData.firstName} {registrationData.lastName}</div>
+                                  <div><span className="font-semibold">Email:</span> {registrationData.email}</div>
+                                  <div><span className="font-semibold">Phone:</span> {registrationData.phone}</div>
+                                  <div><span className="font-semibold">Birthday:</span> {registrationData.birthday}</div>
+                                  <div><span className="font-semibold">Gender:</span> {registrationData.genderSpecify || registrationData.gender}</div>
+                                  <div><span className="font-semibold">Address:</span> {registrationData.address}</div>
+                                  <div><span className="font-semibold">Distance:</span> {registrationData.distanceCategory}</div>
+                                  <div><span className="font-semibold">Price:</span> ₱{registrationData.pricePHP}</div>
+                                  {typeof registrationData.finisherShirt !== 'undefined' && (
+                                    <div><span className="font-semibold">Finisher Shirt:</span> {registrationData.finisherShirt ? 'Yes' : 'No'}</div>
+                                  )}
+                                </div>
+                              </div>
+                            )}
               {error && (
                 <Alert variant="destructive" className="mb-6">
                   <AlertDescription>{error}</AlertDescription>
@@ -167,28 +186,11 @@ export default function PaymentPage() {
                     onChange={handleInputChange}
                     className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground"
                   >
-                    <option value="bank-transfer">Bank Transfer</option>
                     <option value="gcash">GCash</option>
-                    <option value="paymaya">PayMaya</option>
-                    <option value="other">Other</option>
+                    <option value="bdo">BDO Savings Account</option>
                   </select>
                 </FieldGroup>
 
-                {/* Reference Number */}
-                <FieldGroup>
-                  <FieldLabel htmlFor="referenceNumber">Reference Number *</FieldLabel>
-                  <Input
-                    id="referenceNumber"
-                    name="referenceNumber"
-                    value={formData.referenceNumber}
-                    onChange={handleInputChange}
-                    placeholder="e.g., TRNX20260421123456"
-                    className="border-border"
-                  />
-                  <p className="text-xs text-muted-foreground mt-2">
-                    You can find this in your payment confirmation
-                  </p>
-                </FieldGroup>
 
                 {/* Amount */}
                 <FieldGroup>
@@ -246,56 +248,29 @@ export default function PaymentPage() {
                     )}
                   </div>
                 </div>
-
-                {/* Info box */}
-                <div className="bg-primary/10 border border-primary/30 rounded-lg p-6 space-y-4">
-                  <h4 className="font-semibold text-foreground">Payment Instructions:</h4>
-                  <div className="space-y-3 text-sm text-foreground/80">
-                    <div>
-                      <p className="font-medium">Bank Transfer (BDO / BPI / Metrobank)</p>
-                      <p className="text-xs">Account details will be provided via email</p>
-                    </div>
-                    <div>
-                      <p className="font-medium">GCash / PayMaya</p>
-                      <p className="text-xs">Business account details will be provided via email</p>
-                    </div>
-                    <div className="text-xs text-muted-foreground border-t border-primary/20 pt-3 mt-3">
-                      💡 Save your reference number from your payment confirmation. You will need it to upload your proof.
-                    </div>
-                  </div>
-                </div>
-
-                {/* Submit button */}
                 <Button
                   type="submit"
+                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground mt-6"
                   disabled={isLoading}
-                  className="w-full bg-secondary hover:bg-secondary/90 text-secondary-foreground py-6 text-lg"
                 >
-                  {isLoading ? (
-                    <>
-                      <Spinner className="w-4 h-4 mr-2" />
-                      Submitting...
-                    </>
-                  ) : (
-                    'Submit Payment Proof'
-                  )}
+                  {isLoading ? 'Uploading...' : 'Upload Payment Proof'}
                 </Button>
               </form>
             </CardContent>
           </Card>
         ) : (
-          <Card className="border-2 border-secondary/30 bg-gradient-to-br from-secondary/10 to-transparent">
-            <CardContent className="pt-12 pb-12 text-center space-y-6">
-              <div className="text-6xl">✓</div>
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold text-foreground">Payment Submitted!</h2>
-                <p className="text-lg text-muted-foreground">
-                  Thank you for your registration and payment.
-                </p>
+          <Card className="border-2 border-secondary/30">
+            <CardHeader>
+              <CardTitle className="text-3xl">Payment Submitted!</CardTitle>
+              <CardDescription>
+                Thank you for submitting your payment proof. You will be redirected shortly.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col items-center justify-center py-12">
+                <Spinner className="mb-4" />
+                <p className="text-lg font-semibold">Processing your payment...</p>
               </div>
-              <p className="text-muted-foreground">
-                Redirecting to confirmation page...
-              </p>
             </CardContent>
           </Card>
         )}

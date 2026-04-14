@@ -29,7 +29,6 @@ CREATE TABLE IF NOT EXISTS public.registrations (
 CREATE TABLE IF NOT EXISTS public.payments (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   registration_id UUID NOT NULL REFERENCES public.registrations(id) ON DELETE CASCADE,
-  reference_number TEXT NOT NULL,
   amount_php DECIMAL(10, 2) NOT NULL,
   payment_method TEXT NOT NULL,
   payment_proof_url TEXT,

@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS public.registrations (
   birthday DATE,
   distance_category TEXT NOT NULL CHECK (distance_category IN ('3km', '5km', '10km')),
   price_php DECIMAL(10, 2) NOT NULL,
+  finisher_shirt BOOLEAN DEFAULT FALSE,
   registration_date TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'paid', 'verified', 'rejected')),
   notes TEXT,
@@ -20,7 +21,6 @@ CREATE TABLE IF NOT EXISTS public.registrations (
 CREATE TABLE IF NOT EXISTS public.payments (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   registration_id UUID NOT NULL REFERENCES public.registrations(id) ON DELETE CASCADE,
-  reference_number TEXT NOT NULL,
   amount_php DECIMAL(10, 2) NOT NULL,
   payment_method TEXT NOT NULL,
   payment_proof_url TEXT,

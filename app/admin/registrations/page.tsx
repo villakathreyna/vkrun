@@ -16,6 +16,7 @@ interface Registration {
   team?: string;
   distance_category: string;
   price_php: number;
+  finisher_shirt?: boolean;
   status: string;
   created_at: string;
 }
@@ -27,6 +28,7 @@ export default function AdminRegistrationsPage() {
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [filterFinisherShirt, setFilterFinisherShirt] = useState<'all' | 'yes' | 'no'>('all');
 
   useEffect(() => {
     const fetchRegistrations = async () => {
@@ -131,7 +133,11 @@ export default function AdminRegistrationsPage() {
       (reg.email || '').toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesStatus =
       filterStatus === 'all' || reg.status === filterStatus;
-    return matchesSearch && matchesStatus;
+    const matchesFinisher =
+      filterFinisherShirt === 'all' ||
+      (filterFinisherShirt === 'yes' && reg.finisher_shirt) ||
+      (filterFinisherShirt === 'no' && !reg.finisher_shirt);
+    return matchesSearch && matchesStatus && matchesFinisher;
   });
 
   if (isLoading) {
@@ -198,6 +204,15 @@ export default function AdminRegistrationsPage() {
               <option value="confirmed">Confirmed</option>
               <option value="completed">Completed</option>
             </select>
+            <select
+              value={filterFinisherShirt}
+              onChange={e => setFilterFinisherShirt(e.target.value as 'all' | 'yes' | 'no')}
+              className="px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+            >
+              <option value="all">All Finisher Shirt</option>
+              <option value="yes">With Finisher Shirt</option>
+              <option value="no">No Finisher Shirt</option>
+            </select>
             <button
               onClick={handleExportCSV}
               className="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg font-medium hover:bg-secondary/90 transition-colors"
@@ -225,6 +240,7 @@ export default function AdminRegistrationsPage() {
                   <th className="px-4 py-2 text-left text-sm font-semibold text-foreground">Gender</th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-foreground">Team</th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-foreground">Distance</th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-foreground">Finisher Shirt</th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-foreground">Amount Paid</th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-foreground">Status</th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-foreground">Registered</th>
@@ -244,6 +260,13 @@ export default function AdminRegistrationsPage() {
                       <td className="px-4 py-2 text-sm text-foreground">{reg.gender || '-'}</td>
                       <td className="px-4 py-2 text-sm text-foreground">{reg.team || '-'}</td>
                       <td className="px-4 py-2 text-sm text-foreground">{reg.distance_category}</td>
+                      <td className="px-4 py-2 text-sm text-foreground">
+                        {reg.finisher_shirt ? (
+                          <span className="inline-block px-2 py-1 rounded bg-green-100 text-green-800 text-xs font-semibold">Yes</span>
+                        ) : (
+                          <span className="inline-block px-2 py-1 rounded bg-gray-100 text-gray-800 text-xs">No</span>
+                        )}
+                      </td>
                       <td className="px-4 py-2 text-sm text-foreground">₱{getAmount(reg).toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
                       <td className="px-4 py-2 text-sm">
                         <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
