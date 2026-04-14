@@ -33,11 +33,29 @@ export async function POST(request: NextRequest) {
     const supabase = await createClient();
 
     // Check if email already registered
-    const { data: existingRegistration } = await supabase
+    const { data: existingRegistration, error: checkError } = await supabase
       .from('registrations')
       .select('id, status')
       .eq('email', email)
       .maybeSingle();
+
+    if (checkError) {
+      console.error('[v0] Error checking existing registration:', checkError);
+      if (checkError.message && checkError.message.includes("Could not find the table")) {
+        return NextResponse.json(
+          {
+            error: 'Database not initialized',
+            message: 'Please visit /setup-db to initialize the database first',
+            details: checkError.message,
+          },
+          { status: 503 }
+        );
+      }
+      return NextResponse.json(
+        { error: 'Failed to check registration', details: checkError.message },
+        { status: 500 }
+      );
+    }
 
     let registration;
     let error;
@@ -105,6 +123,14 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json(
         { error: 'Failed to create registration', details: error.message },
+        { status: 500 }
+      );
+    }
+
+    if (!registration) {
+      console.error('[v0] Registration is null after operation');
+      return NextResponse.json(
+        { error: 'Failed to create registration' },
         { status: 500 }
       );
     }
