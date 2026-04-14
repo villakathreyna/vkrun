@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { cinzel } from '@/components/fonts';
+import { motion } from 'framer-motion';
 
 export default function SocialFollow() {
   const sponsors = [
@@ -22,16 +23,25 @@ export default function SocialFollow() {
   ];
 
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-b from-secondary/5 via-transparent to-primary/5">
+    <motion.section
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.8, ease: 'easeOut' }}
+      className="py-16 md:py-24 bg-gradient-to-b from-secondary/5 via-transparent to-primary/5"
+    >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="space-y-16">
-          {/* Sponsors section */}
+          {/* Hosted By & Promotional Video section */}
           <div className="space-y-8">
             <div className="text-center space-y-4">
               <h2 className={`text-3xl md:text-4xl font-bold text-foreground ${cinzel.variable} font-cinzel`}>Hosted By</h2>
-              <p className="text-muted-foreground font-serif">Villa Kathreyna Event Place & Resort</p>
+              <p className="text-lg text-foreground font-serif font-bold">Villa Kathreyna Event Place & Resort</p>
+              <p className="text-muted-foreground font-serif max-w-2xl mx-auto">
+                Nestled in Planza, San Fernando, Camarines Sur, Villa Kathreyna is a premier events and leisure destination. Experience the beauty of Bicol as you run through scenic trails and roads, finishing at the resort with post-race celebrations.<br /><br />
+                A wellness and inclusivity run celebrating Fiesta Month and Pride Month — promoting tourism, community, and strength through running.
+              </p>
             </div>
-
             <div className="flex flex-col md:flex-row items-center justify-center gap-8">
               {sponsors.map((sponsor) => (
                 <Link
@@ -53,6 +63,19 @@ export default function SocialFollow() {
                   </div>
                 </Link>
               ))}
+            </div>
+            {/* Promotional Video */}
+            <div className="flex flex-col items-center justify-center mt-10">
+              <div className="w-full max-w-2xl aspect-video rounded-xl overflow-hidden shadow-lg border-2 border-primary">
+                <iframe
+                  src="https://player.vimeo.com/video/1156815617?autoplay=1&loop=1"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowFullScreen
+                  title="Villa Kathreyna Promo Video"
+                  className="w-full h-full"
+                  style={{ minHeight: 320 }}
+                ></iframe>
+              </div>
             </div>
           </div>
 
@@ -78,8 +101,18 @@ export default function SocialFollow() {
             </div>
           </div>
 
-          {/* Footer info */}
-          <div className="border-t border-border pt-12 text-center space-y-4">
+          {/* Navigation & Sitemap */}
+          <div className="border-t border-border pt-12 text-center space-y-6">
+            <nav className="flex flex-wrap justify-center gap-6 text-base font-semibold mb-2">
+              <Link href="/">Home</Link>
+              <Link href="/#categories">Categories</Link>
+              <Link href="/register">Register</Link>
+              <Link href="/#route">Route Map</Link>
+              <Link href="/#socials">Socials</Link>
+            </nav>
+            <div className="text-xs text-muted-foreground">
+              <p>Sitemap: Home | Categories | Register | Route Map | Socials</p>
+            </div>
             <p className="text-sm text-muted-foreground">
               © 2026 Spectrum of Strength Run. Powered by Villa Kathreyna Events.
             </p>
@@ -89,6 +122,6 @@ export default function SocialFollow() {
           </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

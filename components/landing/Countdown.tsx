@@ -41,18 +41,18 @@ export default function Countdown() {
         <div className="h-2 w-8 rounded-l-full bg-[#e94057]" />
         <div className="h-2 w-8 bg-[#f27121]" />
         <div className="h-2 w-8 bg-[#f9d423]" />
-        <div className="h-2 w-8 bg-[#3ec6e0]" />
-        <div className="h-2 w-8 rounded-r-full bg-[#53b987]" />
+        <div className="h-2 w-8 bg-[#e6c97a]" />
+        <div className="h-2 w-8 rounded-r-full bg-[#b6a04c]" />
       </div>
       <div className="flex gap-3 md:gap-5">
         {blocks.map((b) => (
           <div key={b.label} className="flex flex-col items-center">
-            <div className="bg-[#1a2e1a]/90 border-2 border-[#1bb6b1] rounded-lg w-16 h-16 md:w-20 md:h-20 flex items-center justify-center shadow-lg">
-              <span className={`text-2xl md:text-3xl font-bold text-[#e6c97a] ${cinzel.variable} font-cinzel`}>
+            <div className="bg-[#1a2e1a]/90 border-2 border-[#e6c97a] rounded-lg w-16 h-16 md:w-20 md:h-20 flex items-center justify-center shadow-lg">
+              <span className={`text-2xl md:text-3xl font-bold text-[#e6c97a] ${cinzel.variable} font-cinzel`} style={{ fontFamily: 'Cinzel Decorative, Cinzel, serif' }}>
                 {String(b.value).padStart(2, '0')}
               </span>
             </div>
-            <span className={`text-xs md:text-sm text-[#1bb6b1]/90 mt-1.5 uppercase tracking-wider ${cinzel.variable} font-cinzel`}>
+            <span className={`text-xs md:text-sm text-[#e6c97a]/90 mt-1.5 uppercase tracking-wider ${cinzel.variable} font-cinzel`}>
               {b.label}
             </span>
           </div>

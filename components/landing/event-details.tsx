@@ -1,19 +1,26 @@
 
 'use client';
 import React from 'react';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { cinzel } from '@/components/fonts';
 
 // Event Poster Section
 function PosterSection() {
   return (
-    <section className="py-12 md:py-20 bg-gradient-to-b from-[#f9f5ff] via-[#e6c97a]/10 to-[#f9f5ff] flex justify-center">
+    <motion.section
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.8, ease: 'easeOut' }}
+      className="py-12 md:py-20 bg-gradient-to-b from-[#f9f5ff] via-[#e6c97a]/10 to-[#f9f5ff] flex justify-center"
+    >
       <div className="max-w-2xl w-full flex flex-col items-center">
         <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-[#e6c97a]/60">
           <Image src="/vkposter.png" alt="Villa Kathreyna Run Poster" width={600} height={900} className="w-full h-auto" />
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }
 

@@ -6,11 +6,12 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 
+
 import { cinzel } from '@/components/fonts';
 import Countdown from './Countdown';
+import { motion } from 'framer-motion';
 
-
-export default function LandingHero() {
+function LandingHero() {
   return (
     <section className="relative w-full min-h-[70vh] flex items-center justify-center overflow-hidden">
       {/* Villa Kathreyna aerial view as background */}
@@ -23,7 +24,12 @@ export default function LandingHero() {
       />
       {/* Overlay for readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#1a2e1a]/80 via-[#1a2e1a]/60 to-[#e6c97a]/20 z-10" />
-      <div className="relative z-20 w-full max-w-5xl mx-auto px-4 py-24 flex flex-col items-center text-center">
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+        className="relative z-20 w-full max-w-5xl mx-auto px-4 py-24 flex flex-col items-center text-center"
+      >
         {/* Event branding and elegant vertical date stack */}
         <div className="flex flex-col items-center mb-6">
           <span className={`text-3xl md:text-4xl font-bold text-[#e6c97a] drop-shadow-xl mb-2 font-[Cinzel_Decorative] ${cinzel.variable}`}>Villa KathReyna Run</span>
@@ -46,12 +52,19 @@ export default function LandingHero() {
             </Button>
           </Link>
           <Link href="#categories">
-            <Button size="lg" className="bg-[#1bb6b1] hover:bg-[#159a97] text-white px-10 text-lg font-bold uppercase tracking-widest shadow-lg border-2 border-[#e6c97a]">
+            <Button
+              size="lg"
+              className="bg-[#1a2e1a]/90 hover:bg-[#1a2e1a] text-[#e6c97a] px-10 text-lg font-bold uppercase tracking-widest shadow-lg border-2 border-[#e6c97a] transition-colors duration-200"
+              style={{ backdropFilter: 'blur(2px)' }}
+            >
               View Categories
             </Button>
           </Link>
         </div>
-      </div>
+
+      </motion.div>
     </section>
   );
 }
+
+export default LandingHero;
