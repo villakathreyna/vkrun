@@ -42,9 +42,9 @@ export default function EventDetails() {
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-                    {/* 12KM */}
+                    {/* 10KM */}
                     <div className="relative rounded-2xl border-2 border-primary/30 bg-white/80 shadow-xl p-8 flex flex-col items-center">
-                      <span className="text-primary font-bold text-lg mb-2">12KM</span>
+                      <span className="text-primary font-bold text-lg mb-2">10KM</span>
                       <span className="text-xs font-semibold bg-primary/10 text-primary rounded-full px-3 py-1 mb-2">20% Trail · 80% Road</span>
                       <span className="text-2xl font-bold text-foreground mb-2">₱1,000 <span className="text-xs font-normal">+ ₱350 Finisher Shirt (Optional)</span></span>
                       <ul className="text-sm text-foreground/80 space-y-1 mb-4">
@@ -54,7 +54,7 @@ export default function EventDetails() {
                         <li>Post Race Snacks</li>
                       </ul>
                       <a href="/register" className="mt-auto w-full">
-                        <button className="w-full bg-primary text-primary-foreground rounded-lg py-2 font-bold text-lg shadow hover:bg-primary/90 transition">Register for 12KM</button>
+                        <button className="w-full bg-primary text-primary-foreground rounded-lg py-2 font-bold text-lg shadow hover:bg-primary/90 transition">Register for 10KM</button>
                       </a>
                     </div>
                     {/* 5KM */}
