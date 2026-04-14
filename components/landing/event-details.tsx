@@ -7,7 +7,7 @@ import { cinzel } from '@/components/fonts';
 // Event Poster Section
 function PosterSection() {
   return (
-    <section className="py-12 md:py-20 bg-gradient-to-b from-[#e6c97a]/10 to-transparent flex justify-center">
+    <section className="py-12 md:py-20 bg-gradient-to-b from-[#f9f5ff] via-[#e6c97a]/10 to-[#f9f5ff] flex justify-center">
       <div className="max-w-2xl w-full flex flex-col items-center">
         <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-[#e6c97a]/60">
           <Image src="/vkposter.png" alt="Villa Kathreyna Run Poster" width={600} height={900} className="w-full h-auto" />
@@ -66,9 +66,9 @@ export default function EventDetails() {
                       </a>
                     </div>
                     {/* 3KM */}
-                    <div className="relative rounded-2xl border-2 border-accent/30 bg-white/80 shadow-xl p-8 flex flex-col items-center">
-                      <span className="text-accent font-bold text-lg mb-2">3KM</span>
-                      <span className="text-xs font-semibold bg-accent/10 text-accent rounded-full px-3 py-1 mb-2">60% Trail · 40% Road</span>
+                    <div className="relative rounded-2xl border-2 border-[#a259e6]/30 bg-white/80 shadow-xl p-8 flex flex-col items-center">
+                      <span className="font-bold text-lg mb-2" style={{ color: '#a259e6' }}>3KM</span>
+                      <span className="text-xs font-semibold rounded-full px-3 py-1 mb-2" style={{ backgroundColor: '#a259e622', color: '#a259e6' }}>60% Trail · 40% Road</span>
                       <span className="text-2xl font-bold text-foreground mb-2">₱700</span>
                       <ul className="text-sm text-foreground/80 space-y-1 mb-4">
                         <li>Quality Medal</li>
@@ -76,7 +76,7 @@ export default function EventDetails() {
                         <li>Race Bib</li>
                       </ul>
                       <a href="/register" className="mt-auto w-full">
-                        <button className="w-full bg-accent text-accent-foreground rounded-lg py-2 font-bold text-lg shadow hover:bg-accent/90 transition">Register for 3KM</button>
+                        <button className="w-full rounded-lg py-2 font-bold text-lg shadow transition" style={{ backgroundColor: '#a259e6', color: '#fff' }}>Register for 3KM</button>
                       </a>
                     </div>
                   </div>

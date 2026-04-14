@@ -15,9 +15,10 @@ export default function SocialFollow() {
   ];
 
   const socialLinks = [
-    { label: 'Instagram', url: '#', icon: '📷' },
-    { label: 'Facebook', url: '#', icon: '👍' },
-    { label: 'Twitter', url: '#', icon: '𝕏' },
+    { label: 'Villa Kathreyna', url: 'https://www.facebook.com/villakathreyna', icon: '👍' },
+    { label: 'Villa Kathreyna Events', url: 'https://www.facebook.com/villakathreynaevents', icon: '🎉' },
+    { label: 'Labella Cafe RestoBar', url: 'https://www.facebook.com/labellacaferestobar', icon: '☕' },
+    { label: 'RKreations Catering', url: 'https://www.facebook.com/rkreationscatering', icon: '🍽️' },
   ];
 
   return (
