@@ -161,9 +161,19 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error('[REGISTER] Catch block - API error:', error);
-    console.error('[REGISTER] Error details:', { name: (error as Error).name, message: (error as Error).message, stack: (error as Error).stack });
+    const errorMessage = (error as Error).message || 'Unknown error';
+    console.error('[REGISTER] Error details:', { name: (error as Error).name, message: errorMessage, stack: (error as Error).stack });
+    
+    // Check if it's a missing environment variables error
+    if (errorMessage.includes('Missing Supabase environment variables')) {
+      return NextResponse.json(
+        { error: 'Server configuration error', details: 'Supabase environment variables are not configured. Please contact the administrator.' },
+        { status: 503 }
+      );
+    }
+    
     return NextResponse.json(
-      { error: 'Internal server error', details: (error as Error).message },
+      { error: 'Internal server error', details: errorMessage },
       { status: 500 }
     );
   }
