@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(request: NextRequest) {
   try {
     const token = request.headers.get('Authorization')?.replace('Bearer ', '');
-    const status = request.nextUrl.searchParams.get('status') || 'pending';
+    const verificationStatus = request.nextUrl.searchParams.get('verification_status') || 'pending';
     const registrationId = request.nextUrl.searchParams.get('registration_id');
 
     if (!token) {
@@ -20,8 +20,8 @@ export async function GET(request: NextRequest) {
     let query = supabase.from('payments').select('*');
     if (registrationId) {
       query = query.eq('registration_id', registrationId);
-    } else if (status !== 'all') {
-      query = query.eq('status', status);
+    } else if (verificationStatus !== 'all') {
+      query = query.eq('verification_status', verificationStatus);
     }
 
     const { data: payments, error } = await query.order('created_at', {

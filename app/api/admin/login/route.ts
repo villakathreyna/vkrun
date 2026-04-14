@@ -6,13 +6,14 @@ export async function POST(request: NextRequest) {
     const { email, password } = await request.json();
 
     if (email === 'admin@villakathreyna.com' && password === 'admin') {
-      // Hardcoded admin login for demo/testing
+      // Use the real admin UUID
+      const realAdminId = '95a4d6d1-eb9e-4ab5-aa10-d8d6aecf24ba';
       return NextResponse.json(
         {
           success: true,
-          token: 'demo-token',
+          token: realAdminId,
           user: {
-            id: 'demo-id',
+            id: realAdminId,
             email: 'admin@villakathreyna.com',
             name: 'Admin',
           },

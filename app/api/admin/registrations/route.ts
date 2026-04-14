@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(request: NextRequest) {
   try {
     const supabase = await createClient();
+    // Select all relevant fields directly from registrations
     const { data: registrations, error } = await supabase
       .from('registrations')
       .select(`
@@ -20,7 +21,13 @@ export async function GET(request: NextRequest) {
         price_php,
         finisher_shirt,
         status,
-        created_at
+        created_at,
+        amount_php,
+        payment_method,
+        payment_proof_url,
+        verification_status,
+        verified_by_admin_id,
+        verified_at
       `)
       .order('created_at', { ascending: false });
     if (error) {

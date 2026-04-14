@@ -20,28 +20,15 @@ export const metadata: Metadata = {
     '5K',
     '3K',
   ],
-  generator: 'v0.app',
+  // generator removed
   openGraph: {
     title: 'Spectrum of Strength Run 2026',
     description: 'Register for the Spectrum of Strength Fun Run',
     type: 'website',
   },
   icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
+    icon: '/vkrun.png',
+    apple: '/vkrun.png',
   },
 }
 

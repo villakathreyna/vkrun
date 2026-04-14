@@ -1,145 +1,98 @@
+
 'use client';
+import React from 'react';
+import Image from 'next/image';
+import { cinzel } from '@/components/fonts';
 
-export default function EventDetails() {
+// Event Poster Section
+function PosterSection() {
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-b from-transparent via-primary/5 to-transparent">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="space-y-12">
-          {/* Section title */}
-          <div className="text-center space-y-4">
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground">Event Categories</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Choose your running distance and join the celebration of strength and pride
-            </p>
-          </div>
-
-          {/* Race categories grid */}
-          <div className="space-y-8">
-            {/* 10km */}
-            <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-primary/10 to-secondary/10 border border-border p-8 md:p-12">
-              <div className="relative z-10">
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
-                  <div className="space-y-4">
-                    <div className="inline-block">
-                      <span className="text-sm font-bold text-primary bg-primary/10 rounded-full px-4 py-2">
-                        20% TRAIL, 80% ROAD
-                      </span>
-                    </div>
-                    <h3 className="text-4xl md:text-5xl font-bold text-foreground">10km</h3>
-                    <div className="space-y-2 text-foreground/80">
-                      <p className="font-medium">Regular: 1,100₱ | Early Bird: 1,000₱</p>
-                      <ul className="space-y-2 text-sm">
-                        <li className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
-                          Quality Medal
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
-                          Singlet
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
-                          Race Bib
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
-                          Post Race Snacks
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
-                          Finisher Shirt - ₱350 (Optional)
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {/* Decorative element */}
-              <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-secondary/10 rounded-full blur-2xl" />
-            </div>
-
-            {/* 5km */}
-            <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-secondary/10 to-accent/10 border border-border p-8 md:p-12">
-              <div className="relative z-10">
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
-                  <div className="space-y-4">
-                    <div className="inline-block">
-                      <span className="text-sm font-bold text-secondary bg-secondary/10 rounded-full px-4 py-2">
-                        20% TRAIL, 80% ROAD
-                      </span>
-                    </div>
-                    <h3 className="text-4xl md:text-5xl font-bold text-foreground">5km</h3>
-                    <div className="space-y-2 text-foreground/80">
-                      <p className="font-medium">Regular: 900₱ | Early Bird: 800₱</p>
-                      <ul className="space-y-2 text-sm">
-                        <li className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
-                          Quality Medal
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
-                          Singlet
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
-                          Race Bib
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
-                          Post Race Snacks
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-primary/10 rounded-full blur-2xl" />
-            </div>
-
-            {/* 3km */}
-            <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-accent/10 to-primary/10 border border-border p-8 md:p-12">
-              <div className="relative z-10">
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
-                  <div className="space-y-4">
-                    <div className="inline-block">
-                      <span className="text-sm font-bold text-accent bg-accent/10 rounded-full px-4 py-2">
-                        30% TRAIL, 70% ROAD
-                      </span>
-                    </div>
-                    <h3 className="text-4xl md:text-5xl font-bold text-foreground">3km</h3>
-                    <div className="space-y-2 text-foreground/80">
-                      <p className="font-medium">Regular: 800₱ | Early Bird: 700₱</p>
-                      <ul className="space-y-2 text-sm">
-                        <li className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
-                          Quality Medal
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
-                          Singlet
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
-                          Race Bib
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-secondary/10 rounded-full blur-2xl" />
-            </div>
-          </div>
-
-          {/* Registration note */}
-          <div className="mt-12 p-8 bg-secondary/10 border border-secondary/20 rounded-lg">
-            <p className="text-center text-foreground/80">
-              <span className="font-semibold">Early Bird Registration:</span> April 15 - May 10 |{' '}
-              <span className="font-semibold">Regular Registration:</span> May 11 - May 31
-            </p>
-          </div>
+    <section className="py-12 md:py-20 bg-gradient-to-b from-[#e6c97a]/10 to-transparent flex justify-center">
+      <div className="max-w-2xl w-full flex flex-col items-center">
+        <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-[#e6c97a]/60">
+          <Image src="/vkposter.png" alt="Villa Kathreyna Run Poster" width={600} height={900} className="w-full h-auto" />
         </div>
       </div>
     </section>
   );
 }
+
+export default function EventDetails() {
+  return (
+    <>
+      <PosterSection />
+              {/* Categories Section */}
+              <section id="categories" className="py-20 md:py-28 bg-gradient-to-b from-transparent via-primary/5 to-transparent">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                  <div className="text-center space-y-4 mb-12">
+                    <h2 className={`text-4xl md:text-5xl font-bold text-foreground ${cinzel.variable} font-cinzel`}>Choose Your Distance</h2>
+                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-serif">
+                      Select the category that matches your pace. All distances start and finish at Villa Kathreyna.
+                    </p>
+                    <div className="flex flex-wrap justify-center gap-4 mt-4">
+                      <span className="bg-primary/10 text-primary font-semibold rounded-full px-4 py-2">Early Bird Rate: April 10 – April 30</span>
+                      <span className="bg-secondary/10 text-secondary font-semibold rounded-full px-4 py-2">Regular Rate: May 1 – May 31</span>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    {/* 12KM */}
+                    <div className="relative rounded-2xl border-2 border-primary/30 bg-white/80 shadow-xl p-8 flex flex-col items-center">
+                      <span className="text-primary font-bold text-lg mb-2">12KM</span>
+                      <span className="text-xs font-semibold bg-primary/10 text-primary rounded-full px-3 py-1 mb-2">20% Trail · 80% Road</span>
+                      <span className="text-2xl font-bold text-foreground mb-2">₱1,000 <span className="text-xs font-normal">+ ₱350 Finisher Shirt (Optional)</span></span>
+                      <ul className="text-sm text-foreground/80 space-y-1 mb-4">
+                        <li>Quality Medal</li>
+                        <li>Singlet</li>
+                        <li>Race Bib</li>
+                        <li>Post Race Snacks</li>
+                      </ul>
+                      <a href="/register" className="mt-auto w-full">
+                        <button className="w-full bg-primary text-primary-foreground rounded-lg py-2 font-bold text-lg shadow hover:bg-primary/90 transition">Register for 12KM</button>
+                      </a>
+                    </div>
+                    {/* 5KM */}
+                    <div className="relative rounded-2xl border-2 border-secondary/30 bg-white/80 shadow-xl p-8 flex flex-col items-center">
+                      <span className="text-secondary font-bold text-lg mb-2">5KM</span>
+                      <span className="text-xs font-semibold bg-secondary/10 text-secondary rounded-full px-3 py-1 mb-2">60% Trail · 40% Road</span>
+                      <span className="text-2xl font-bold text-foreground mb-2">₱800</span>
+                      <ul className="text-sm text-foreground/80 space-y-1 mb-4">
+                        <li>Quality Medal</li>
+                        <li>Singlet</li>
+                        <li>Race Bib</li>
+                        <li>Post Race Snacks</li>
+                      </ul>
+                      <a href="/register" className="mt-auto w-full">
+                        <button className="w-full bg-secondary text-secondary-foreground rounded-lg py-2 font-bold text-lg shadow hover:bg-secondary/90 transition">Register for 5KM</button>
+                      </a>
+                    </div>
+                    {/* 3KM */}
+                    <div className="relative rounded-2xl border-2 border-accent/30 bg-white/80 shadow-xl p-8 flex flex-col items-center">
+                      <span className="text-accent font-bold text-lg mb-2">3KM</span>
+                      <span className="text-xs font-semibold bg-accent/10 text-accent rounded-full px-3 py-1 mb-2">60% Trail · 40% Road</span>
+                      <span className="text-2xl font-bold text-foreground mb-2">₱700</span>
+                      <ul className="text-sm text-foreground/80 space-y-1 mb-4">
+                        <li>Quality Medal</li>
+                        <li>Singlet</li>
+                        <li>Race Bib</li>
+                      </ul>
+                      <a href="/register" className="mt-auto w-full">
+                        <button className="w-full bg-accent text-accent-foreground rounded-lg py-2 font-bold text-lg shadow hover:bg-accent/90 transition">Register for 3KM</button>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* Route Map Section */}
+              <section className="py-20 md:py-28 bg-gradient-to-b from-primary/5 to-secondary/5">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                  <h2 className={`text-3xl md:text-4xl font-bold text-foreground mb-6 ${cinzel.variable} font-cinzel`}>Trail & Road Course</h2>
+                  <p className="text-lg text-muted-foreground mb-8 font-serif">Experience the beauty of Bicol as you run through scenic trails and roads, finishing at Villa Kathreyna Event Place & Resort.</p>
+                  <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-primary/30 inline-block">
+                    <Image src="/vkrun_map.png" alt="Villa Kathreyna Run Route Map" width={1000} height={500} className="w-full h-auto" />
+                  </div>
+                </div>
+              </section>
+            </>
+          );
+        }

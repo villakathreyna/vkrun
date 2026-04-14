@@ -129,41 +129,6 @@ export default function AdminExportPage() {
           </div>
 
           {/* Payments Export */}
-          <div className="bg-card border border-border rounded-lg p-8">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-secondary/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                <svg
-                  className="w-6 h-6 text-secondary"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold text-foreground mb-2">
-                  Export Payments
-                </h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Download all payment data as CSV file. Includes reference
-                  numbers, amounts, emails, and verification status.
-                </p>
-                <button
-                  onClick={handleExportPayments}
-                  disabled={isLoading}
-                  className="px-6 py-2 bg-secondary text-secondary-foreground rounded-lg font-medium hover:bg-secondary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isLoading ? 'Exporting...' : 'Download CSV'}
-                </button>
-              </div>
-            </div>
-          </div>
 
           {/* Info */}
           <div className="bg-muted/50 border border-border rounded-lg p-6">

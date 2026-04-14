@@ -19,6 +19,12 @@ interface Registration {
   finisher_shirt?: boolean;
   status: string;
   created_at: string;
+  amount_php?: number;
+  payment_method?: string;
+  payment_proof_url?: string;
+  verification_status?: string;
+  verified_by_admin_id?: string;
+  verified_at?: string;
 }
 
 export default function AdminRegistrationsPage() {
@@ -78,52 +84,56 @@ export default function AdminRegistrationsPage() {
   async function handleVerifyPayment(registrationId: string) {
     try {
       const token = localStorage.getItem('adminToken');
-      const res = await fetch(`/api/admin/payments?registration_id=${registrationId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      const payment = data.payments?.find((p: any) => p.registration_id === registrationId);
-      if (!payment) {
-        alert('No payment found for this registrant.');
-        return;
-      }
-      const verifyRes = await fetch(`/api/admin/payments/${payment.id}/verify`, {
+      const res = await fetch(`/api/admin/payments/verify-by-registration`, {
         method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ registration_id: registrationId }),
       });
-      if (!verifyRes.ok) {
+      if (!res.ok) {
         alert('Failed to verify payment');
       } else {
+        // Optimistically update the local state
+        setRegistrations((prev) =>
+          prev.map((reg) =>
+            reg.id === registrationId
+              ? {
+                  ...reg,
+                  verification_status: 'verified',
+                  status: 'verified',
+                  verified_by_admin_id: token || '',
+                  verified_at: new Date().toISOString(),
+                }
+              : reg
+          )
+        );
         alert('Payment verified!');
-        window.location.reload();
       }
     } catch (err) {
       alert('Error verifying payment');
     }
   }
 
-  // CSV Export
-  function handleExportCSV() {
-    const csvRows: string[] = [];
-    csvRows.push('ID,Name,Email,Distance,Status,Created At');
-    filteredRegistrations.forEach((reg) => {
-      const row = [
-        reg.id,
-        `${reg.last_name}, ${reg.first_name}`,
-        reg.email,
-        reg.distance_category,
-        reg.status,
-        new Date(reg.created_at).toLocaleDateString(),
-      ];
-      csvRows.push(row.map((cell) => `"${cell}"`).join(','));
-    });
-    const csv = csvRows.join('\n');
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `registrations-${new Date().toISOString().split('T')[0]}.csv`;
-    link.click();
+  // CSV Export using backend endpoint
+  async function handleExportCSV() {
+    try {
+      const token = localStorage.getItem('adminToken');
+      const response = await fetch('/api/admin/export/registrations', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!response.ok) throw new Error('Export failed');
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `registrations-${new Date().toISOString().split('T')[0]}.csv`;
+      link.click();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      alert('Failed to export registrations');
+    }
   }
 
   // Filtered registrations
@@ -177,7 +187,7 @@ export default function AdminRegistrationsPage() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-8">
+      <main className="max-w-[98vw] xl:max-w-[1600px] mx-auto px-2 py-6">
         {error && (
           <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4 mb-8">
             <p className="text-destructive">{error}</p>
@@ -186,7 +196,7 @@ export default function AdminRegistrationsPage() {
 
         {/* Filters and Export */}
         <div className="mb-6 space-y-4">
-          <div className="flex gap-4 flex-col md:flex-row">
+          <div className="flex gap-4 flex-col md:flex-row text-xs">
             <input
               type="text"
               placeholder="Search by name or email..."
@@ -220,7 +230,7 @@ export default function AdminRegistrationsPage() {
               Export CSV
             </button>
           </div>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-xs text-muted-foreground">
             Total: {filteredRegistrations.length} registrations
           </p>
         </div>
@@ -228,7 +238,7 @@ export default function AdminRegistrationsPage() {
         {/* Table */}
         <div className="bg-card border border-border rounded-lg overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full text-[11px] md:text-xs lg:text-xs xl:text-xs">
               <thead>
                 <tr className="border-b border-border bg-muted/50">
                   <th className="px-4 py-2 text-left text-sm font-semibold text-foreground">Surname, First Name</th>
@@ -241,8 +251,11 @@ export default function AdminRegistrationsPage() {
                   <th className="px-4 py-2 text-left text-sm font-semibold text-foreground">Team</th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-foreground">Distance</th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-foreground">Finisher Shirt</th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-foreground">Amount Due</th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-foreground">Amount Paid</th>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-foreground">Status</th>
+                  {/* Removed Status column */}
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-foreground">Payment Verification</th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-foreground">Proof of Payment</th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-foreground">Registered</th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-foreground">Action</th>
                 </tr>
@@ -251,42 +264,55 @@ export default function AdminRegistrationsPage() {
                 {filteredRegistrations.length > 0 ? (
                   filteredRegistrations.map((reg) => (
                     <tr key={reg.id} className="border-b border-border hover:bg-muted/50 transition-colors">
-                      <td className="px-4 py-2 text-sm text-foreground">{reg.last_name}, {reg.first_name}</td>
-                      <td className="px-4 py-2 text-sm text-foreground">{reg.address || '-'}</td>
-                      <td className="px-4 py-2 text-sm text-foreground">{reg.birthday ? new Date(reg.birthday).toLocaleDateString() : '-'}</td>
-                      <td className="px-4 py-2 text-sm text-foreground">{computeAge(reg.birthday)}</td>
-                      <td className="px-4 py-2 text-sm text-muted-foreground">{reg.email}</td>
-                      <td className="px-4 py-2 text-sm text-foreground">{reg.phone}</td>
-                      <td className="px-4 py-2 text-sm text-foreground">{reg.gender || '-'}</td>
-                      <td className="px-4 py-2 text-sm text-foreground">{reg.team || '-'}</td>
-                      <td className="px-4 py-2 text-sm text-foreground">{reg.distance_category}</td>
-                      <td className="px-4 py-2 text-sm text-foreground">
+                      <td className="px-4 py-2 text-xs text-foreground">{reg.last_name}, {reg.first_name}</td>
+                      <td className="px-4 py-2 text-xs text-foreground">{reg.address || '-'}</td>
+                      <td className="px-4 py-2 text-xs text-foreground">{reg.birthday ? new Date(reg.birthday).toLocaleDateString() : '-'}</td>
+                      <td className="px-4 py-2 text-xs text-foreground">{computeAge(reg.birthday)}</td>
+                      <td className="px-4 py-2 text-xs text-muted-foreground">{reg.email}</td>
+                      <td className="px-4 py-2 text-xs text-foreground">{reg.phone}</td>
+                      <td className="px-4 py-2 text-xs text-foreground">{reg.gender || '-'}</td>
+                      <td className="px-4 py-2 text-xs text-foreground">{reg.team || '-'}</td>
+                      <td className="px-4 py-2 text-xs text-foreground">{reg.distance_category}</td>
+                      <td className="px-4 py-2 text-xs text-foreground">
                         {reg.finisher_shirt ? (
                           <span className="inline-block px-2 py-1 rounded bg-green-100 text-green-800 text-xs font-semibold">Yes</span>
                         ) : (
                           <span className="inline-block px-2 py-1 rounded bg-gray-100 text-gray-800 text-xs">No</span>
                         )}
                       </td>
-                      <td className="px-4 py-2 text-sm text-foreground">₱{getAmount(reg).toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
-                      <td className="px-4 py-2 text-sm">
-                        <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
-                          reg.status === 'confirmed'
+                      <td className="px-4 py-2 text-xs text-foreground">₱{getAmount(reg).toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+                      <td className="px-4 py-2 text-xs text-foreground">{typeof reg.amount_php === 'number' ? `₱${reg.amount_php.toLocaleString('en-US', { minimumFractionDigits: 2 })}` : '-'}</td>
+                      {/* Removed Status cell */}
+                      <td className="px-4 py-2 text-xs">
+                        <span className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${
+                          reg.verification_status === 'verified'
                             ? 'bg-green-100 text-green-800'
-                            : reg.status === 'completed'
-                            ? 'bg-blue-100 text-blue-800'
-                            : 'bg-yellow-100 text-yellow-800'
+                            : reg.verification_status === 'pending'
+                            ? 'bg-yellow-100 text-yellow-800'
+                            : 'bg-gray-100 text-gray-800'
                         }`}>
-                          {reg.status}
+                          {reg.verification_status || 'pending'}
                         </span>
                       </td>
-                      <td className="px-4 py-2 text-sm text-muted-foreground">{new Date(reg.created_at).toLocaleDateString()}</td>
-                      <td className="px-4 py-2 text-sm">
-                        <button
-                          className="px-3 py-1 bg-primary text-white rounded hover:bg-primary/80"
-                          onClick={() => handleVerifyPayment(reg.id)}
-                        >
-                          Verify Payment
-                        </button>
+                      <td className="px-4 py-2 text-xs">
+                        {reg.payment_proof_url ? (
+                          <a href={reg.payment_proof_url} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline break-all">
+                            View Proof
+                          </a>
+                        ) : (
+                          <span className="text-muted-foreground">No file</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-2 text-xs text-muted-foreground">{new Date(reg.created_at).toLocaleDateString()}</td>
+                      <td className="px-4 py-2 text-xs">
+                        {reg.verification_status !== 'verified' && (
+                          <button
+                            className="px-3 py-1 bg-primary text-white rounded hover:bg-primary/80 text-xs"
+                            onClick={() => handleVerifyPayment(reg.id)}
+                          >
+                            Verify Payment
+                          </button>
+                        )}
                       </td>
                     </tr>
                   ))

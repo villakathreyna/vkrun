@@ -39,6 +39,14 @@
   --sidebar-ring: oklch(0.55 0.16 190);
 }
 
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-cinzel), serif;
+    letter-spacing: 0.01em;
+    font-variant-ligatures: discretionary-ligatures;
+  }
+}
+
 .dark {
   --background: oklch(0.20 0.01 225);
   --foreground: oklch(0.95 0.01 225);

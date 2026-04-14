@@ -23,26 +23,60 @@ export async function GET(request: NextRequest) {
       throw error;
     }
 
-    // Generate CSV
+    // Generate CSV with all display fields including payment and verification
     const headers = [
-      'ID',
-      'Full Name',
+      'Surname, First Name',
+      'Address',
+      'Birthday',
+      'Age',
       'Email',
-      'Race Category',
-      'Phone',
-      'Bib Number',
+      'Contact',
+      'Gender',
+      'Team',
+      'Distance',
+      'Finisher Shirt',
+      'Amount Paid',
       'Status',
-      'Created At',
+      'Payment Method',
+      'Payment Proof URL',
+      'Verification Status',
+      'Registered',
     ];
 
+    function computeAge(birthday) {
+      if (!birthday) return '';
+      const birthDate = new Date(birthday);
+      const refDate = new Date('2026-06-21');
+      let age = refDate.getFullYear() - birthDate.getFullYear();
+      const m = refDate.getMonth() - birthDate.getMonth();
+      if (m < 0 || (m === 0 && refDate.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      return age;
+    }
+
+    function getAmount(reg) {
+      const regDate = new Date(reg.created_at);
+      const cutoff = new Date('2026-05-11');
+      return regDate >= cutoff ? Number(reg.price_php) + 100 : Number(reg.price_php);
+    }
+
     const rows = (registrations || []).map((reg) => [
-      reg.id,
-      reg.full_name,
+      `${reg.last_name}, ${reg.first_name}`,
+      reg.address || '',
+      reg.birthday ? new Date(reg.birthday).toLocaleDateString() : '',
+      computeAge(reg.birthday),
       reg.email,
-      reg.race_category,
-      reg.phone || '',
-      reg.bib_number || '',
+      reg.phone,
+      reg.gender || '',
+      reg.team || '',
+      reg.distance_category,
+      reg.finisher_shirt ? 'Yes' : 'No',
+      getAmount(reg).toLocaleString('en-US', { minimumFractionDigits: 2 }),
       reg.status,
+      reg.payment_method || '',
+      reg.payment_proof_url || '',
+      reg.verification_status || '',
       new Date(reg.created_at).toLocaleDateString(),
     ]);
 
