@@ -117,7 +117,7 @@ export default function SocialFollow() {
               © 2026 Spectrum of Strength Run. Powered by Villa Kathreyna Events.
             </p>
             <p className="text-xs text-muted-foreground">
-              For inquiries, contact: events@villakathreyna.com | +63 (2) 1234-5678
+              For inquiries, contact: events@villakathreyna.com | 0977 627 1360
             </p>
           </div>
         </div>
