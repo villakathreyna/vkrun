@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { cinzel } from '@/components/fonts';
 
 export default function RegistrationCards() {
   return (
@@ -11,8 +12,8 @@ export default function RegistrationCards() {
         <div className="space-y-12">
           {/* Section header */}
           <div className="text-center space-y-4">
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground">How to Register</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <h2 className={`text-4xl md:text-5xl font-bold text-foreground ${cinzel.variable} font-cinzel`}>How to Register</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-serif">
               A simple 3-step process to secure your spot in the Spectrum of Strength Run
             </p>
           </div>
@@ -25,7 +26,7 @@ export default function RegistrationCards() {
                 <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
                   <span className="text-2xl font-bold text-primary-foreground">1</span>
                 </div>
-                <CardTitle className="text-foreground">Fill Your Details</CardTitle>
+                <CardTitle className={`text-foreground ${cinzel.variable} font-cinzel`}>Fill Your Details</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <CardDescription className="text-foreground/70">
@@ -45,7 +46,7 @@ export default function RegistrationCards() {
                 <div className="w-12 h-12 bg-gradient-to-br from-secondary to-accent rounded-lg flex items-center justify-center">
                   <span className="text-2xl font-bold text-secondary-foreground">2</span>
                 </div>
-                <CardTitle className="text-foreground">Submit Payment</CardTitle>
+                <CardTitle className={`text-foreground ${cinzel.variable} font-cinzel`}>Submit Payment</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <CardDescription className="text-foreground/70">
@@ -63,7 +64,7 @@ export default function RegistrationCards() {
                 <div className="w-12 h-12 bg-gradient-to-br from-accent to-primary rounded-lg flex items-center justify-center">
                   <span className="text-2xl font-bold text-accent-foreground">3</span>
                 </div>
-                <CardTitle className="text-foreground">Confirmation</CardTitle>
+                <CardTitle className={`text-foreground ${cinzel.variable} font-cinzel`}>Confirmation</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <CardDescription className="text-foreground/70">
@@ -76,8 +77,8 @@ export default function RegistrationCards() {
 
           {/* CTA section */}
           <div className="mt-12 p-8 bg-gradient-to-r from-primary/10 to-secondary/10 border border-border rounded-xl text-center space-y-6">
-            <h3 className="text-3xl font-bold text-foreground">Ready to Join the Celebration?</h3>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <h3 className={`text-3xl font-bold text-foreground ${cinzel.variable} font-cinzel`}>Ready to Join the Celebration?</h3>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-serif">
               Secure your spot today. Limited slots available for each distance category.
             </p>
             <Link href="/register">

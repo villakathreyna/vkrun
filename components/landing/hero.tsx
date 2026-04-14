@@ -24,8 +24,9 @@ export default function LandingHero() {
       {/* Overlay for readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#1a2e1a]/80 via-[#1a2e1a]/60 to-[#e6c97a]/20 z-10" />
       <div className="relative z-20 w-full max-w-5xl mx-auto px-4 py-24 flex flex-col items-center text-center">
-        {/* Elegant vertical date stack */}
-        <div className="inline-block mb-6">
+        {/* Event branding and elegant vertical date stack */}
+        <div className="flex flex-col items-center mb-6">
+          <span className={`text-3xl md:text-4xl font-bold text-[#e6c97a] drop-shadow-xl mb-2 font-[Cinzel_Decorative] ${cinzel.variable}`}>Villa KathReyna Run</span>
           <div className="flex flex-col items-center justify-center bg-[#e6c97a] bg-gradient-to-b from-[#e6c97a] to-[#b6a04c] border-4 border-[#1a2e1a]/60 rounded-2xl px-7 py-3 shadow-2xl">
             <span className={`text-lg md:text-xl font-bold text-[#1a2e1a] uppercase tracking-widest ${cinzel.variable} font-cinzel`}>June</span>
             <span className={`text-5xl md:text-6xl font-extrabold text-[#1a2e1a] leading-none ${cinzel.variable} font-cinzel`}>21</span>
@@ -45,7 +46,7 @@ export default function LandingHero() {
             </Button>
           </Link>
           <Link href="#categories">
-            <Button size="lg" variant="outline" className="border-[#e6c97a] text-[#e6c97a] px-10 text-lg font-bold uppercase tracking-widest shadow-lg">
+            <Button size="lg" className="bg-[#1bb6b1] hover:bg-[#159a97] text-white px-10 text-lg font-bold uppercase tracking-widest shadow-lg border-2 border-[#e6c97a]">
               View Categories
             </Button>
           </Link>

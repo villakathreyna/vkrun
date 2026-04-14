@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+
+import { cinzel } from '@/components/fonts';
 
 const EVENT_DATE = new Date('2026-06-21T05:00:00+08:00');
 
+import { useEffect, useRef, useState } from "react";
 function getTimeLeft() {
   const now = new Date();
   const diff = EVENT_DATE.getTime() - now.getTime();
@@ -14,10 +16,13 @@ function getTimeLeft() {
   };
 }
 
+
 export default function Countdown() {
-  const [timeLeft, setTimeLeft] = useState(getTimeLeft());
+  // Start with zeros to avoid hydration mismatch
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
+    setTimeLeft(getTimeLeft()); // Set actual time left after mount
     const timer = setInterval(() => setTimeLeft(getTimeLeft()), 1000);
     return () => clearInterval(timer);
   }, []);
@@ -30,19 +35,29 @@ export default function Countdown() {
   ];
 
   return (
-    <div className="flex gap-3 md:gap-5">
-      {blocks.map((b) => (
-        <div key={b.label} className="flex flex-col items-center">
-          <div className="bg-[#1a2e1a]/90 border-2 border-[#e6c97a] rounded-lg w-16 h-16 md:w-20 md:h-20 flex items-center justify-center shadow-lg">
-            <span className="text-2xl md:text-3xl font-cinzel font-bold text-[#e6c97a]">
-              {String(b.value).padStart(2, '0')}
+    <div className="flex flex-col items-center">
+      {/* Rainbow accent */}
+      <div className="flex mb-2">
+        <div className="h-2 w-8 rounded-l-full bg-[#e94057]" />
+        <div className="h-2 w-8 bg-[#f27121]" />
+        <div className="h-2 w-8 bg-[#f9d423]" />
+        <div className="h-2 w-8 bg-[#3ec6e0]" />
+        <div className="h-2 w-8 rounded-r-full bg-[#53b987]" />
+      </div>
+      <div className="flex gap-3 md:gap-5">
+        {blocks.map((b) => (
+          <div key={b.label} className="flex flex-col items-center">
+            <div className="bg-[#1a2e1a]/90 border-2 border-[#1bb6b1] rounded-lg w-16 h-16 md:w-20 md:h-20 flex items-center justify-center shadow-lg">
+              <span className={`text-2xl md:text-3xl font-bold text-[#e6c97a] ${cinzel.variable} font-cinzel`}>
+                {String(b.value).padStart(2, '0')}
+              </span>
+            </div>
+            <span className={`text-xs md:text-sm text-[#1bb6b1]/90 mt-1.5 uppercase tracking-wider ${cinzel.variable} font-cinzel`}>
+              {b.label}
             </span>
           </div>
-          <span className="text-xs md:text-sm text-[#e6c97a]/80 font-cinzel mt-1.5 uppercase tracking-wider">
-            {b.label}
-          </span>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }
