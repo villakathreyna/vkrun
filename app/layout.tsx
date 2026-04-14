@@ -7,9 +7,25 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
+  title: 'Spectrum of Strength Run 2026 | Villa Kathreyna',
+  description:
+    'Register for the Spectrum of Strength Run 2026 at Villa Kathreyna Event Place & Resort. Join us on June 21, 2026 in San Fernando, Camarines Sur. Choose from 3km, 5km, or 10km categories.',
+  keywords: [
+    'fun run',
+    'race registration',
+    'Villa Kathreyna',
+    'San Fernando',
+    'Camarines Sur',
+    '10K',
+    '5K',
+    '3K',
+  ],
   generator: 'v0.app',
+  openGraph: {
+    title: 'Spectrum of Strength Run 2026',
+    description: 'Register for the Spectrum of Strength Fun Run',
+    type: 'website',
+  },
   icons: {
     icon: [
       {
@@ -35,8 +51,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className="font-sans antialiased">
+    <html lang="en" className="bg-background">
+      <body className="font-sans antialiased bg-background">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
