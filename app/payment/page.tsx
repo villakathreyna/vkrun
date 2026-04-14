@@ -24,7 +24,9 @@ export default function PaymentPage() {
     amount: '',
   });
 
-  const registrationId = typeof window !== 'undefined' ? localStorage.getItem('registrationId') : '';
+  // Read registration form data from localStorage
+  const registrationFormData = typeof window !== 'undefined' ? localStorage.getItem('registrationFormData') : '';
+  const registrationData = registrationFormData ? JSON.parse(registrationFormData) : null;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -68,8 +70,8 @@ export default function PaymentPage() {
     try {
       const file = fileInputRef.current?.files?.[0];
 
-      if (!registrationId) {
-        setError('Registration not found. Please register first.');
+      if (!registrationData) {
+        setError('Registration information not found. Please register first.');
         setIsLoading(false);
         return;
       }
@@ -92,15 +94,15 @@ export default function PaymentPage() {
         return;
       }
 
-      // Create FormData for file upload
+      // Create FormData for file upload and registration
       const uploadFormData = new FormData();
       uploadFormData.append('file', file);
-      uploadFormData.append('registrationId', registrationId);
+      uploadFormData.append('registration', JSON.stringify(registrationData));
       uploadFormData.append('referenceNumber', formData.referenceNumber);
       uploadFormData.append('amount', formData.amount);
       uploadFormData.append('paymentMethod', formData.paymentMethod);
 
-      const response = await fetch('/api/payment', {
+      const response = await fetch('/api/register-and-pay', {
         method: 'POST',
         body: uploadFormData,
       });
@@ -115,7 +117,7 @@ export default function PaymentPage() {
 
       // Success!
       setSuccess(true);
-      localStorage.removeItem('registrationId');
+      localStorage.removeItem('registrationFormData');
 
       // Redirect to confirmation after 2 seconds
       setTimeout(() => {

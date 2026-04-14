@@ -5,6 +5,8 @@ CREATE TABLE IF NOT EXISTS public.registrations (
   first_name TEXT NOT NULL,
   last_name TEXT NOT NULL,
   phone TEXT NOT NULL,
+  address TEXT,
+  birthday DATE,
   distance_category TEXT NOT NULL CHECK (distance_category IN ('3km', '5km', '10km')),
   price_php DECIMAL(10, 2) NOT NULL,
   registration_date TIMESTAMP WITH TIME ZONE DEFAULT NOW(),

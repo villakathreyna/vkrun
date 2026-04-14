@@ -5,6 +5,7 @@ export async function GET(request: NextRequest) {
   try {
     const token = request.headers.get('Authorization')?.replace('Bearer ', '');
     const status = request.nextUrl.searchParams.get('status') || 'pending';
+    const registrationId = request.nextUrl.searchParams.get('registration_id');
 
     if (!token) {
       return NextResponse.json(
@@ -15,9 +16,11 @@ export async function GET(request: NextRequest) {
 
     const supabase = await createClient();
 
-    let query = supabase.from('payments').select('*');
 
-    if (status !== 'all') {
+    let query = supabase.from('payments').select('*');
+    if (registrationId) {
+      query = query.eq('registration_id', registrationId);
+    } else if (status !== 'all') {
       query = query.eq('status', status);
     }
 

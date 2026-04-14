@@ -22,9 +22,24 @@ export default function AdminPaymentsPage() {
   const [payments, setPayments] = useState<Payment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
-  const [filterStatus, setFilterStatus] = useState('pending');
+  const [filterStatus, setFilterStatus] = useState('all');
+  const [sortBy, setSortBy] = useState<'created_at' | 'amount'>('created_at');
+  const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc');
   const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
   const [showPreview, setShowPreview] = useState(false);
+
+  // Filter and sort payments client-side (must be before return, not inside JSX)
+  const filteredAndSortedPayments = payments
+    .filter((p) => filterStatus === 'all' || p.status === filterStatus)
+    .sort((a, b) => {
+      let cmp = 0;
+      if (sortBy === 'created_at') {
+        cmp = new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+      } else if (sortBy === 'amount') {
+        cmp = (a.amount || 0) - (b.amount || 0);
+      }
+      return sortOrder === 'asc' ? cmp : -cmp;
+    });
 
   useEffect(() => {
     const fetchPayments = async () => {
@@ -35,8 +50,9 @@ export default function AdminPaymentsPage() {
           return;
         }
 
+        // Always fetch all payments, filtering is done client-side
         const response = await fetch(
-          `/api/admin/payments?status=${filterStatus}`,
+          `/api/admin/payments?status=all`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -57,7 +73,7 @@ export default function AdminPaymentsPage() {
     };
 
     fetchPayments();
-  }, [router, filterStatus]);
+  }, [router]);
 
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
@@ -175,16 +191,42 @@ export default function AdminPaymentsPage() {
         )}
 
         {/* Filter */}
-        <div className="mb-6 flex gap-4">
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className="px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-          >
-            <option value="pending">Pending</option>
-            <option value="verified">Verified</option>
-            <option value="rejected">Rejected</option>
-          </select>
+        <div className="mb-6 flex flex-wrap gap-4 items-center">
+          <label className="flex items-center gap-2">
+            Status:
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="px-2 py-1 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+            >
+              <option value="all">All</option>
+              <option value="pending">Pending</option>
+              <option value="verified">Verified</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </label>
+          <label className="flex items-center gap-2">
+            Sort by:
+            <select
+              value={sortBy}
+              onChange={e => setSortBy(e.target.value as 'created_at' | 'amount')}
+              className="px-2 py-1 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+            >
+              <option value="created_at">Date</option>
+              <option value="amount">Amount</option>
+            </select>
+          </label>
+          <label className="flex items-center gap-2">
+            Order:
+            <select
+              value={sortOrder}
+              onChange={e => setSortOrder(e.target.value as 'asc' | 'desc')}
+              className="px-2 py-1 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+            >
+              <option value="desc">Descending</option>
+              <option value="asc">Ascending</option>
+            </select>
+          </label>
           <button
             onClick={handleExportCSV}
             className="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg font-medium hover:bg-secondary/90 transition-colors"
@@ -192,14 +234,14 @@ export default function AdminPaymentsPage() {
             Export CSV
           </button>
           <p className="text-sm text-muted-foreground py-2">
-            Total: {payments.length} payments
+            Total: {filteredAndSortedPayments.length} payments
           </p>
         </div>
 
         {/* Payment Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {payments.length > 0 ? (
-            payments.map((payment) => (
+          {filteredAndSortedPayments.length > 0 ? (
+            filteredAndSortedPayments.map((payment) => (
               <div
                 key={payment.id}
                 className="bg-card border border-border rounded-lg p-4 hover:shadow-lg transition-shadow cursor-pointer"
@@ -218,9 +260,9 @@ export default function AdminPaymentsPage() {
                   <div>
                     <p className="text-xs text-muted-foreground">Amount</p>
                     <p className="text-lg font-bold text-primary">
-                      ₱{payment.amount.toLocaleString('en-US', {
+                      ₱{typeof payment.amount === 'number' ? payment.amount.toLocaleString('en-US', {
                         minimumFractionDigits: 2,
-                      })}
+                      }) : '0.00'}
                     </p>
                   </div>
                   <div>
@@ -242,7 +284,7 @@ export default function AdminPaymentsPage() {
             ))
           ) : (
             <div className="col-span-full text-center py-8">
-              <p className="text-muted-foreground">No payments to review</p>
+              <p className="text-muted-foreground">No payments found</p>
             </div>
           )}
         </div>
@@ -282,9 +324,11 @@ export default function AdminPaymentsPage() {
                 <div>
                   <p className="text-sm text-muted-foreground">Amount</p>
                   <p className="text-lg font-semibold text-primary">
-                    ₱{selectedPayment.amount.toLocaleString('en-US', {
-                      minimumFractionDigits: 2,
-                    })}
+                    ₱{selectedPayment && typeof selectedPayment.amount === 'number'
+                      ? selectedPayment.amount.toLocaleString('en-US', {
+                          minimumFractionDigits: 2,
+                        })
+                      : '0.00'}
                   </p>
                 </div>
                 <div className="col-span-2">
