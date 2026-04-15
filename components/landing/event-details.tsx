@@ -54,7 +54,7 @@ export default function EventDetails() {
                         <li>Post Race Snacks</li>
                       </ul>
                       <a href="/register" className="mt-auto w-full">
-                        <button className="w-full bg-primary text-primary-foreground rounded-lg py-2 font-bold text-lg shadow hover:bg-primary/90 transition">Register for 10KM</button>
+                        <button className="w-full bg-primary text-primary-foreground rounded-xl py-4 font-extrabold text-2xl shadow-lg hover:bg-primary/90 transition scale-105 hover:scale-110 duration-200">Register for 10KM</button>
                       </a>
                     </div>
                     {/* 5KM */}
@@ -69,7 +69,7 @@ export default function EventDetails() {
                         <li>Post Race Snacks</li>
                       </ul>
                       <a href="/register" className="mt-auto w-full">
-                        <button className="w-full bg-secondary text-secondary-foreground rounded-lg py-2 font-bold text-lg shadow hover:bg-secondary/90 transition">Register for 5KM</button>
+                        <button className="w-full bg-secondary text-secondary-foreground rounded-xl py-4 font-extrabold text-2xl shadow-lg hover:bg-secondary/90 transition scale-105 hover:scale-110 duration-200">Register for 5KM</button>
                       </a>
                     </div>
                     {/* 3KM */}
@@ -83,7 +83,7 @@ export default function EventDetails() {
                         <li>Race Bib</li>
                       </ul>
                       <a href="/register" className="mt-auto w-full">
-                        <button className="w-full rounded-lg py-2 font-bold text-lg shadow transition" style={{ backgroundColor: '#a259e6', color: '#fff' }}>Register for 3KM</button>
+                        <button className="w-full rounded-xl py-4 font-extrabold text-2xl shadow-lg transition scale-105 hover:scale-110 duration-200" style={{ backgroundColor: '#a259e6', color: '#fff' }}>Register for 3KM</button>
                       </a>
                     </div>
                   </div>
