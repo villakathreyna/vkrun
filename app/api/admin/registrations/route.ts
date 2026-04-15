@@ -18,6 +18,7 @@ export async function GET(request: NextRequest) {
         gender,
         team,
         distance_category,
+        entitlement_size,
         price_php,
         finisher_shirt,
         status,

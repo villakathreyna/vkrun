@@ -68,19 +68,24 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border bg-card">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-2">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Admin Dashboard</h1>
             <p className="text-sm text-muted-foreground">
               Spectrum of Strength Run 2026
             </p>
           </div>
-          <button
-            onClick={handleLogout}
-            className="px-4 py-2 border border-border rounded-lg text-sm font-medium text-foreground hover:bg-muted transition-colors"
-          >
-            Logout
-          </button>
+          <div className="flex gap-2">
+            <a href="https://run.villakathreyna.com" target="_blank" rel="noopener noreferrer">
+              <button className="px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold text-sm shadow hover:bg-primary/90 transition">Back to Home</button>
+            </a>
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 border border-border rounded-lg text-sm font-medium text-foreground hover:bg-muted transition-colors"
+            >
+              Logout
+            </button>
+          </div>
         </div>
       </header>
 

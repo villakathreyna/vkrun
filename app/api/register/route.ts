@@ -4,13 +4,13 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { firstName, lastName, email, phone, distanceCategory, pricePHP } = body;
+    const { firstName, lastName, email, phone, distanceCategory, pricePHP, entitlementSize } = body;
 
     console.log('[REGISTER] Request received:', { email, distanceCategory });
 
     // Validate required fields
-    if (!firstName || !lastName || !email || !phone || !distanceCategory || !pricePHP) {
-      console.log('[REGISTER] Missing fields:', { firstName, lastName, email, phone, distanceCategory, pricePHP });
+    if (!firstName || !lastName || !email || !phone || !distanceCategory || !pricePHP || !entitlementSize) {
+      console.log('[REGISTER] Missing fields:', { firstName, lastName, email, phone, distanceCategory, pricePHP, entitlementSize });
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -31,6 +31,14 @@ export async function POST(request: NextRequest) {
       console.log('[REGISTER] Invalid distance category:', distanceCategory);
       return NextResponse.json(
         { error: 'Invalid distance category' },
+        { status: 400 }
+      );
+    }
+    // Validate entitlement size
+    if (!['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'].includes(entitlementSize)) {
+      console.log('[REGISTER] Invalid entitlement size:', entitlementSize);
+      return NextResponse.json(
+        { error: 'Invalid entitlement size' },
         { status: 400 }
       );
     }
@@ -84,6 +92,7 @@ export async function POST(request: NextRequest) {
             phone,
             distance_category: distanceCategory,
             price_php: pricePHP,
+            entitlement_size: entitlementSize,
           })
           .eq('id', existingRegistration.id)
           .select()
@@ -112,6 +121,7 @@ export async function POST(request: NextRequest) {
           phone,
           distance_category: distanceCategory,
           price_php: pricePHP,
+          entitlement_size: entitlementSize,
           status: 'pending',
         })
         .select()

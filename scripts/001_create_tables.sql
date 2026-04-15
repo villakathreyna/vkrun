@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS public.registrations (
   address TEXT,
   birthday DATE,
   distance_category TEXT NOT NULL CHECK (distance_category IN ('3km', '5km', '10km')),
+  entitlement_size TEXT CHECK (entitlement_size IN ('XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL')),
   price_php DECIMAL(10, 2) NOT NULL,
   finisher_shirt BOOLEAN DEFAULT FALSE,
   registration_date TIMESTAMP WITH TIME ZONE DEFAULT NOW(),

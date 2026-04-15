@@ -44,6 +44,11 @@ export default function AdminLoginPage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-primary/10 via-background to-secondary/5 flex items-center justify-center p-4">
       <div className="max-w-md w-full">
+        <div className="flex justify-end mb-2">
+          <a href="https://run.villakathreyna.com" target="_blank" rel="noopener noreferrer">
+            <button className="px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold text-sm shadow hover:bg-primary/90 transition">Back to Home</button>
+          </a>
+        </div>
         <div className="bg-card rounded-lg shadow-lg p-8">
           {/* Logo/Branding */}
           <div className="text-center mb-8">

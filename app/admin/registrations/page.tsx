@@ -15,6 +15,7 @@ interface Registration {
   gender?: string;
   team?: string;
   distance_category: string;
+  entitlement_size?: string;
   price_php: number;
   finisher_shirt?: boolean;
   status: string;
@@ -250,6 +251,7 @@ export default function AdminRegistrationsPage() {
                   <th className="px-4 py-2 text-left text-sm font-semibold text-foreground">Gender</th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-foreground">Team</th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-foreground">Distance</th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-foreground">Entitlement Size</th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-foreground">Finisher Shirt</th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-foreground">Amount Due</th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-foreground">Amount Paid</th>
@@ -273,6 +275,7 @@ export default function AdminRegistrationsPage() {
                       <td className="px-4 py-2 text-xs text-foreground">{reg.gender || '-'}</td>
                       <td className="px-4 py-2 text-xs text-foreground">{reg.team || '-'}</td>
                       <td className="px-4 py-2 text-xs text-foreground">{reg.distance_category}</td>
+                      <td className="px-4 py-2 text-xs text-foreground">{reg.entitlement_size || '-'}</td>
                       <td className="px-4 py-2 text-xs text-foreground">
                         {reg.finisher_shirt ? (
                           <span className="inline-block px-2 py-1 rounded bg-green-100 text-green-800 text-xs font-semibold">Yes</span>
@@ -297,7 +300,7 @@ export default function AdminRegistrationsPage() {
                       <td className="px-4 py-2 text-xs">
                         {reg.payment_proof_url ? (
                           <a href={reg.payment_proof_url} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline break-all">
-                            View Proof
+                            View
                           </a>
                         ) : (
                           <span className="text-muted-foreground">No file</span>

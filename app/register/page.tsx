@@ -21,6 +21,9 @@ export default function RegisterPage() {
     gender: string;
     genderSpecify: string;
     distanceCategory: string;
+    entitlementSize: string;
+    emergencyContactName: string;
+    emergencyContactNumber: string;
     finisherShirt: boolean;
   }
   interface FieldErrors {
@@ -46,8 +49,14 @@ export default function RegisterPage() {
     gender: '',
     genderSpecify: '',
     distanceCategory: '',
+    entitlementSize: '',
+    emergencyContactName: '',
+    emergencyContactNumber: '',
     finisherShirt: false,
   });
+  const [confirmSubmit, setConfirmSubmit] = useState(false);
+  const [agreed, setAgreed] = useState(false);
+  const [showWaiver, setShowWaiver] = useState(false);
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -126,7 +135,11 @@ export default function RegisterPage() {
   }
 
   function handleInputChange(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type } = e.target;
+    let checked = false;
+    if (type === 'checkbox' && 'checked' in e.target) {
+      checked = (e.target as HTMLInputElement).checked;
+    }
     setFormData((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
@@ -195,7 +208,13 @@ export default function RegisterPage() {
       });
       const data = await response.json();
       if (!response.ok) {
-        setError(data.error || 'Payment submission failed');
+        if (data.error && data.error.includes('already been used to register')) {
+          setError('This email has already been used to register. Please use a different email.');
+          setStep(1);
+          setAgreed(false);
+        } else {
+          setError(data.error || 'Payment submission failed');
+        }
         setIsLoading(false);
         return;
       }
@@ -229,6 +248,7 @@ export default function RegisterPage() {
     }
     setError('');
     setFieldErrors({});
+    setAgreed(false);
     setStep(2);
   }
 
@@ -243,11 +263,13 @@ export default function RegisterPage() {
     }
     setError('');
     setFieldErrors({});
+    setAgreed(false);
+    setIsLoading(false);
     setStep(3);
   }
 
   return (
-    <main className="max-w-2xl mx-auto py-10 px-4">
+    <main className="max-w-2xl mx-auto py-6 px-2 sm:py-10 sm:px-4 text-[15px] sm:text-base">
       <Link href="/">
         <Button variant="ghost" className="mb-8">
           ← Back to Home
@@ -287,22 +309,14 @@ export default function RegisterPage() {
         </div>
       </div>
 
-      <Card className={`border-2 border-primary/30 ${
-        step === 1
-          ? 'bg-[#ffe6ec]/60' // pastel pink
-          : step === 2
-          ? 'bg-[#e6f7ff]/60' // pastel blue
-          : step === 3
-          ? 'bg-[#e6ffe6]/60' // pastel green
-          : ''
-      }`}>
+      <Card className="border-2 border-primary/30 bg-white text-[15px] sm:text-base">
         <CardHeader>
-          <CardTitle className="text-3xl">
+          <CardTitle className="text-2xl sm:text-3xl">
             {step === 1 && 'Your Information'}
             {step === 2 && 'Choose Your Distance'}
             {step === 3 && 'Complete Payment'}
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-sm sm:text-base">
             {step === 1 && 'Tell us about yourself'}
             {step === 2 && `You've selected the ${formData.distanceCategory} run`}
             {step === 3 && 'Submit your payment proof'}
@@ -324,8 +338,8 @@ export default function RegisterPage() {
 
           {/* Step 1: Personal Info */}
           {step === 1 && (
-            <form className="space-y-6">
-              <div className="flex gap-4">
+            <form className="space-y-4 sm:space-y-6">
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
                 <FieldGroup className="flex-1">
                   <FieldLabel htmlFor="firstName">First Name *</FieldLabel>
                   <Input
@@ -352,7 +366,7 @@ export default function RegisterPage() {
                 </FieldGroup>
               </div>
 
-              <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
                 <FieldGroup className="flex-1">
                   <FieldLabel htmlFor="email">Email *</FieldLabel>
                   <Input
@@ -397,14 +411,14 @@ export default function RegisterPage() {
                 {fieldErrors.address && <div className="text-destructive text-xs mt-1">{fieldErrors.address}</div>}
               </FieldGroup>
 
-              <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
                 <FieldGroup className="flex-1">
                   <FieldLabel htmlFor="birthday">Birthday *</FieldLabel>
                   <DatePicker
                     id="birthday"
                     name="birthday"
                     selected={formData.birthday ? new Date(formData.birthday) : null}
-                    onChange={(date) => {
+                    onChange={(date: Date | null) => {
                       setFormData((prev) => ({ ...prev, birthday: date ? date.toISOString().slice(0, 10) : '' }));
                     }}
                     dateFormat="yyyy-MM-dd"
@@ -431,40 +445,90 @@ export default function RegisterPage() {
                 </FieldGroup>
               </div>
 
-              <FieldGroup>
-                <FieldLabel htmlFor="gender">Gender *</FieldLabel>
-                <select
-                  id="gender"
-                  name="gender"
-                  value={formData.gender}
-                  onChange={handleInputChange}
-                  className={`border-border w-full px-3 py-2 rounded${fieldErrors.gender ? ' border-destructive' : ''}`}
-                  required
-                >
-                  <option value="">Select gender</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="specify">Specify</option>
-                </select>
-                {fieldErrors.gender && <div className="text-destructive text-xs mt-1">{fieldErrors.gender}</div>}
-                {formData.gender === 'specify' && (
-                  <>
-                    <Input
-                      id="genderSpecify"
-                      name="genderSpecify"
-                      value={formData.genderSpecify}
-                      onChange={handleInputChange}
-                      placeholder="Please specify"
-                      className={`border-border mt-2${fieldErrors.genderSpecify ? ' border-destructive' : ''}`}
-                    />
-                    {fieldErrors.genderSpecify && <div className="text-destructive text-xs mt-1">{fieldErrors.genderSpecify}</div>}
-                  </>
-                )}
-              </FieldGroup>
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                <FieldGroup className="flex-1">
+                  <FieldLabel htmlFor="gender">Gender *</FieldLabel>
+                  <select
+                    id="gender"
+                    name="gender"
+                    value={formData.gender}
+                    onChange={handleInputChange}
+                    className={`border border-border w-full px-3 py-2 rounded${fieldErrors.gender ? ' border-destructive' : ''}`}
+                    required
+                  >
+                    <option value="">Select gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="specify">Specify</option>
+                  </select>
+                  {fieldErrors.gender && <div className="text-destructive text-xs mt-1">{fieldErrors.gender}</div>}
+                  {formData.gender === 'specify' && (
+                    <>
+                      <Input
+                        id="genderSpecify"
+                        name="genderSpecify"
+                        value={formData.genderSpecify}
+                        onChange={handleInputChange}
+                        placeholder="Please specify"
+                        className={`border-border mt-2${fieldErrors.genderSpecify ? ' border-destructive' : ''}`}
+                      />
+                      {fieldErrors.genderSpecify && <div className="text-destructive text-xs mt-1">{fieldErrors.genderSpecify}</div>}
+                    </>
+                  )}
+                </FieldGroup>
+                <FieldGroup className="flex-1">
+                  <FieldLabel htmlFor="entitlementSize">Entitlement Size *</FieldLabel>
+                  <select
+                    id="entitlementSize"
+                    name="entitlementSize"
+                    value={formData.entitlementSize}
+                    onChange={handleInputChange}
+                    className="border border-border w-full px-3 py-2 rounded"
+                    required
+                  >
+                    <option value="">Select Size</option>
+                    <option value="XXS">XXS</option>
+                    <option value="XS">XS</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                    <option value="XXL">XXL</option>
+                    <option value="XXXL">XXXL</option>
+                  </select>
+                </FieldGroup>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                <FieldGroup className="flex-1">
+                  <FieldLabel htmlFor="emergencyContactName" className="text-sm sm:text-base">Emergency Contact Name *</FieldLabel>
+                  <Input
+                    id="emergencyContactName"
+                    name="emergencyContactName"
+                    value={formData.emergencyContactName}
+                    onChange={handleInputChange}
+                    placeholder="Full Name"
+                    className="border-border text-sm sm:text-base py-2 sm:py-2.5"
+                    required
+                  />
+                </FieldGroup>
+                <FieldGroup className="flex-1">
+                  <FieldLabel htmlFor="emergencyContactNumber" className="text-sm sm:text-base">Emergency Contact Number *</FieldLabel>
+                  <Input
+                    id="emergencyContactNumber"
+                    name="emergencyContactNumber"
+                    value={formData.emergencyContactNumber}
+                    onChange={handleInputChange}
+                    placeholder="09XXXXXXXXX"
+                    className="border-border text-sm sm:text-base py-2 sm:py-2.5"
+                    required
+                  />
+                </FieldGroup>
+              </div>
 
               <Button
                 onClick={handleNext}
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-base sm:text-lg py-2 sm:py-3"
               >
                 Next: Choose Distance
               </Button>
@@ -473,8 +537,8 @@ export default function RegisterPage() {
 
           {/* Step 2: Distance Selection */}
           {step === 2 && (
-            <form className="space-y-6">
-              <div className="space-y-4">
+            <form className="space-y-4 sm:space-y-6">
+              <div className="space-y-3 sm:space-y-4">
                 {['3km', '5km', '10km'].map((distance) => {
                   const price = getPrice(distance);
                   return (
@@ -515,7 +579,7 @@ export default function RegisterPage() {
                 {formData.distanceCategory === '10km' && (
                   <button
                     type="button"
-                    className={`w-full mt-4 p-4 rounded-lg border-2 flex items-center justify-between text-lg font-semibold transition-all ${formData.finisherShirt ? 'border-primary bg-primary/10 text-primary' : 'border-border hover:border-primary/50'}`}
+                    className={`w-full mt-3 sm:mt-4 p-3 sm:p-4 rounded-lg border-2 flex items-center justify-between text-base sm:text-lg font-semibold transition-all ${formData.finisherShirt ? 'border-primary bg-primary/10 text-primary' : 'border-border hover:border-primary/50'}`}
                     onClick={() => setFormData((prev) => ({ ...prev, finisherShirt: !prev.finisherShirt }))}
                   >
                     <span>Finisher Shirt - ₱350 (Optional)</span>
@@ -527,9 +591,9 @@ export default function RegisterPage() {
                 )}
               </div>
 
-              <div className="bg-secondary/10 p-4 rounded-lg space-y-2">
+              <div className="bg-secondary/10 p-3 sm:p-4 rounded-lg space-y-2">
                 <p className="font-semibold text-foreground">Includes:</p>
-                <ul className="text-sm text-foreground/80 space-y-1">
+                <ul className="text-xs sm:text-sm text-foreground/80 space-y-1">
                   {getEntitlements(formData.distanceCategory || '3km').map((item) => (
                     <li key={item} className="flex items-center gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
@@ -539,10 +603,15 @@ export default function RegisterPage() {
                 </ul>
               </div>
 
-              <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
                 <Button
                   variant="outline"
-                  onClick={() => setStep(1)}
+                  onClick={() => {
+                    setStep(1);
+                    setIsLoading(false);
+                    setError('');
+                    setAgreed(false);
+                  }}
                   className="flex-1"
                 >
                   Back
@@ -567,14 +636,14 @@ export default function RegisterPage() {
 
           {/* Step 3: Payment Info */}
           {step === 3 && (
-            <form className="space-y-6" onSubmit={handlePaymentSubmit} encType="multipart/form-data">
-              <div className="bg-gradient-to-r from-primary/10 to-secondary/10 p-6 rounded-lg border border-border">
+            <form className="space-y-4 sm:space-y-6" onSubmit={handlePaymentSubmit} encType="multipart/form-data">
+              <div className="bg-gradient-to-r from-primary/10 to-secondary/10 p-4 sm:p-6 rounded-lg border border-border">
                 <p className="text-sm text-muted-foreground mb-2">Total Amount Due</p>
                 <p className="text-4xl font-bold text-foreground">₱{currentPrice}</p>
                 <p className="text-sm text-muted-foreground mt-2">{formData.distanceCategory} Registration</p>
               </div>
 
-              <div className="space-y-4 bg-card p-6 rounded-lg border border-border">
+              <div className="space-y-3 sm:space-y-4 bg-card p-4 sm:p-6 rounded-lg border border-border">
                 <h4 className="font-bold text-foreground mb-4">Payment Methods</h4>
                 <div className="flex flex-col gap-3">
                   <button
@@ -606,7 +675,7 @@ export default function RegisterPage() {
                 </div>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 <FieldGroup>
                   <FieldLabel htmlFor="amount">Amount Paid (PHP) *</FieldLabel>
                   <Input
@@ -696,11 +765,78 @@ export default function RegisterPage() {
                 </FieldGroup>
               </div>
 
-              <div className="flex gap-4">
+              {/* Waiver/Data Privacy Checkbox */}
+              <div className="flex items-center border border-border rounded px-4 py-3 mb-2 gap-3">
+                <input
+                  id="waiverAgree"
+                  type="checkbox"
+                  checked={agreed}
+                  onChange={e => setAgreed(e.target.checked)}
+                  className="accent-primary w-5 h-5 border-2 border-primary rounded mr-3 focus:ring-2 focus:ring-primary"
+                  required
+                />
+                <label htmlFor="waiverAgree" className="flex-1 text-sm select-none">
+                  I have read and agree to the{' '}
+                  <button
+                    type="button"
+                    className="underline text-primary hover:opacity-80"
+                    onClick={() => setShowWaiver(true)}
+                  >
+                    Waiver, Terms & Conditions, and Data Privacy Policy
+                  </button>
+                </label>
+              </div>
+
+              {/* Waiver Modal */}
+              {showWaiver && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+                  <div className="bg-white rounded-lg shadow-lg max-w-lg w-full p-8 relative">
+                    <button
+                      type="button"
+                      className="absolute top-3 right-3 text-xl text-muted-foreground hover:text-primary"
+                      onClick={() => setShowWaiver(false)}
+                      aria-label="Close"
+                    >
+                      ×
+                    </button>
+                    <h2 className="text-xl font-bold mb-4">Waiver, Terms & Conditions, and Data Privacy Notice</h2>
+                    <div className="max-h-96 overflow-y-auto text-sm text-foreground/90 space-y-4 whitespace-pre-line">
+                      <p className="font-bold">Event Participation</p>
+                      <p>
+                        I, (Participant), am voluntarily participating in Villa Kathreyna Run taking place at Planza, San Fernando, Camarines Sur on June 21, 2026. I certify that I am in good health and physically fit as declared by a qualified medical professional. It is my responsibility to seek medical advice if I have any concern about my fitness. I am aware that participating in this event involves risks, including but not limited to physical injury, death, or property damage. I am participating fully aware of these risks, whether known or unknown.
+                      </p>
+                      <p className="font-bold">Waiver and Release of Liability</p>
+                      <p>
+                        I hereby release the ORGANIZERS of this marathon, namely, Villa Kathreyna and their officers, members, advisors, volunteers, employees, and Governing Board, as well as any lessor of the facility premises, from any liability for loss, damage, injury, expense, demand, or cause of action that may occur while participating in this event. I acknowledge that all related entities are not responsible for errors, omissions, acts, or failures of any party conducting specific activities on their behalf.
+                      </p>
+                      <p className="font-bold">Personal Data Collection & Use</p>
+                      <p>
+                        By registering, I consent to the collection, use, and storage of my personal data, including my name, contact details, date of birth, emergency contacts, and payment information, for the purpose of event registration, updates, and ensuring participant safety. My data may be shared with medical personnel, venue partners, and event sponsors only when necessary. My information will not be sold to third parties.
+                      </p>
+                      <p className="font-bold">Photography and Media Consent</p>
+                      <p>
+                        I understand that while participating in the event, I may be photographed or filmed. I consent to the use of my image, video, or likeness by the event organizers, sponsors, and partners for legitimate promotional purposes.
+                      </p>
+                      <p className="font-bold">Data Retention & Rights</p>
+                      <p>
+                        My personal data will be retained only as long as necessary and protected with reasonable security measures. I have the right to access, correct, or request deletion of my personal data, subject to legal and operational requirements.
+                      </p>
+                      <p className="font-bold text-primary mt-4">I CERTIFY THAT I HAVE READ THIS DOCUMENT, FULLY UNDERSTAND ITS CONTENT, AND AGREE TO THE WAIVER, TERMS & CONDITIONS, AND DATA PRIVACY POLICY. I SIGN THIS OF MY OWN FREE WILL.</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-2">
                 <Button
                   variant="outline"
                   type="button"
-                  onClick={() => setStep(2)}
+                  onClick={() => {
+                    setAgreed(false);
+                    setIsLoading(false);
+                    setError('');
+                    setStep(2);
+                  }}
                   className="flex-1"
                 >
                   Back
@@ -708,7 +844,7 @@ export default function RegisterPage() {
                 <Button
                   type="submit"
                   className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground"
-                  disabled={isLoading}
+                  disabled={isLoading || !agreed}
                 >
                   {isLoading ? 'Uploading...' : 'Submit Registration & Payment'}
                 </Button>
@@ -719,7 +855,7 @@ export default function RegisterPage() {
       </Card>
 
       {step === 4 && (
-        <div className="max-w-lg mx-auto bg-white rounded-lg shadow-lg p-8 mt-8 border border-primary/30">
+        <div className="max-w-lg mx-auto bg-white rounded-lg shadow-lg p-4 sm:p-8 mt-8 border border-primary/30 text-[15px] sm:text-base">
           <h2 className="text-3xl font-bold text-primary mb-4 text-center">Registration Receipt</h2>
           <div className="mb-6 text-center">
             <p className="text-lg text-foreground">Thank you for registering and submitting your payment proof!</p>
@@ -727,7 +863,7 @@ export default function RegisterPage() {
           </div>
           <div className="bg-muted rounded-lg p-4 mb-6">
             <h3 className="font-semibold mb-2 text-foreground">Registrant Details</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm">
               <div><span className="font-semibold">Name:</span> {formData.firstName} {formData.lastName}</div>
               <div><span className="font-semibold">Email:</span> {formData.email}</div>
               <div><span className="font-semibold">Phone:</span> {formData.phone}</div>
@@ -735,23 +871,29 @@ export default function RegisterPage() {
               <div><span className="font-semibold">Gender:</span> {formData.genderSpecify || formData.gender}</div>
               <div><span className="font-semibold">Address:</span> {formData.address}</div>
               <div><span className="font-semibold">Distance:</span> {formData.distanceCategory}</div>
+              <div><span className="font-semibold">Entitlement Size:</span> {formData.entitlementSize}</div>
+              <div><span className="font-semibold">Emergency Contact Name:</span> {formData.emergencyContactName}</div>
+              <div><span className="font-semibold">Emergency Contact Number:</span> {formData.emergencyContactNumber}</div>
               <div><span className="font-semibold">Price:</span> ₱{currentPrice}</div>
               {typeof formData.finisherShirt !== 'undefined' && (
                 <div><span className="font-semibold">Finisher Shirt:</span> {formData.finisherShirt ? 'Yes' : 'No'}</div>
+              )}
+              {formData.team && (
+                <div><span className="font-semibold">Team:</span> {formData.team}</div>
               )}
             </div>
           </div>
           <div className="bg-muted rounded-lg p-4 mb-6">
             <h3 className="font-semibold mb-2 text-foreground">Payment Details</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm">
               <div><span className="font-semibold">Payment Method:</span> {paymentForm.paymentMethod === 'gcash' ? 'GCash' : 'BDO Savings Account'}</div>
               <div><span className="font-semibold">Amount Paid:</span> ₱{paymentForm.amount}</div>
             </div>
           </div>
-          <div className="text-center mt-8">
+          <div className="text-center mt-6 sm:mt-8">
             <p className="text-muted-foreground text-xs mb-4">You may screenshot this receipt for your records.</p>
             <Link href="/">
-              <Button className="bg-primary text-primary-foreground">Back to Home</Button>
+              <Button className="bg-primary text-primary-foreground text-base sm:text-lg py-2 sm:py-3">Back to Home</Button>
             </Link>
           </div>
         </div>

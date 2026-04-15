@@ -16,6 +16,10 @@ export async function sendEmail({ to, subject, registrant, payment }: {
     distanceCategory: string;
     pricePHP: number;
     finisherShirt?: boolean;
+    entitlementSize?: string;
+    emergencyContactName?: string;
+    emergencyContactNumber?: string;
+    team?: string;
   };
   payment: {
     method: string;
@@ -26,7 +30,7 @@ export async function sendEmail({ to, subject, registrant, payment }: {
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
       <div style="background: #1e293b; color: #fff; padding: 24px 32px;">
-        <h2 style="margin: 0;">Villa Kathreyna Run Registration Receipt</h2>
+        <h2 style="margin: 0;">Villa Kathreyna Run: Spectrum of Strength - A Pride & Fiesta Run 2026 Registration Receipt</h2>
       </div>
       <div style="padding: 24px 32px;">
         <h3 style="margin-top: 0;">Registrant Details</h3>
@@ -38,6 +42,10 @@ export async function sendEmail({ to, subject, registrant, payment }: {
           <tr><td><b>Birthday:</b></td><td>${registrant.birthday}</td></tr>
           <tr><td><b>Gender:</b></td><td>${registrant.gender}</td></tr>
           <tr><td><b>Distance Category:</b></td><td>${registrant.distanceCategory}</td></tr>
+          <tr><td><b>Entitlement Size:</b></td><td>${registrant.entitlementSize}</td></tr>
+          <tr><td><b>Emergency Contact Name:</b></td><td>${registrant.emergencyContactName}</td></tr>
+          <tr><td><b>Emergency Contact Number:</b></td><td>${registrant.emergencyContactNumber}</td></tr>
+          <tr><td><b>Team:</b></td><td>${registrant.team || ''}</td></tr>
           <tr><td><b>Finisher Shirt:</b></td><td>${registrant.finisherShirt ? 'Yes' : 'No'}</td></tr>
         </table>
         <h3 style="margin-bottom: 0;">Payment Details</h3>
