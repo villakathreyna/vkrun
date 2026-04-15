@@ -67,7 +67,7 @@ export default function SocialFollow() {
             </div>
             {/* Promotional Video */}
             <div className="flex flex-col items-center justify-center mt-10">
-              <div className="w-full max-w-2xl aspect-video rounded-xl overflow-hidden shadow-lg border-2 border-primary">
+              <div className="w-full max-w-2xl aspect-video rounded-xl overflow-hidden shadow-lg">
                 <iframe
                   src="https://player.vimeo.com/video/1156815617?autoplay=1&loop=1"
                   allow="autoplay; fullscreen; picture-in-picture"
