@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 export default function RegisterPage() {
   const [step, setStep] = useState(1);
@@ -387,13 +389,21 @@ export default function RegisterPage() {
               <div className="flex gap-4">
                 <FieldGroup className="flex-1">
                   <FieldLabel htmlFor="birthday">Birthday *</FieldLabel>
-                  <Input
+                  <DatePicker
                     id="birthday"
                     name="birthday"
-                    type="date"
-                    value={formData.birthday}
-                    onChange={handleInputChange}
-                    className={`border-border${fieldErrors.birthday ? ' border-destructive' : ''}`}
+                    selected={formData.birthday ? new Date(formData.birthday) : null}
+                    onChange={(date) => {
+                      setFormData((prev) => ({ ...prev, birthday: date ? date.toISOString().slice(0, 10) : '' }));
+                    }}
+                    dateFormat="yyyy-MM-dd"
+                    maxDate={new Date()}
+                    minDate={new Date('1900-01-01')}
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
+                    placeholderText="Select your birthday"
+                    className={`w-full border px-3 py-2 rounded bg-background${fieldErrors.birthday ? ' border-destructive' : ' border-border'}`}
                   />
                   {fieldErrors.birthday && <div className="text-destructive text-xs mt-1">{fieldErrors.birthday}</div>}
                 </FieldGroup>
