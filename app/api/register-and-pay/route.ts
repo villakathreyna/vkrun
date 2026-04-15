@@ -81,9 +81,37 @@ export async function POST(request: NextRequest) {
     const registrationId = reg.id;
 
     try {
+      // Send confirmation email to registrant
       await sendEmail({
         to: registration.email,
         subject: 'Villa Kathreyna Run: Spectrum of Strength - A Pride & Fiesta Run 2026 Registration Receipt',
+        registrant: {
+          firstName: registration.firstName,
+          lastName: registration.lastName,
+          email: registration.email,
+          phone: registration.phone,
+          address: registration.address,
+          birthday: registration.birthday,
+          gender: registration.genderSpecify || registration.gender,
+          distanceCategory: registration.distanceCategory,
+          pricePHP: registration.pricePHP,
+          finisherShirt: typeof registration.finisherShirt !== 'undefined' ? registration.finisherShirt : false,
+          entitlementSize: registration.entitlementSize,
+          emergencyContactName: registration.emergencyContactName,
+          emergencyContactNumber: registration.emergencyContactNumber,
+          team: registration.team,
+        },
+        payment: {
+          method: paymentMethod === 'gcash' ? 'GCash' : 'BDO Savings Account',
+          amount: Number(amount),
+          date: new Date().toLocaleString('en-PH', { timeZone: 'Asia/Manila' }),
+        },
+      });
+
+      // Send notification email to admin
+      await sendEmail({
+        to: 'admin@villakathreyna.com',
+        subject: 'New Registration: ' + registration.firstName + ' ' + registration.lastName,
         registrant: {
           firstName: registration.firstName,
           lastName: registration.lastName,
