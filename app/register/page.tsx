@@ -131,6 +131,7 @@ export default function RegisterPage() {
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
     }));
+    setIsLoading(false); // Re-enable submit button if user edits any field
   }
 
   function handlePaymentInputChange(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
@@ -259,19 +260,21 @@ export default function RegisterPage() {
           {[1, 2, 3].map((num) => (
             <div key={num} className="flex items-center flex-1">
               <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${
+                className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-md border-2 ${
                   num <= step
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-muted text-muted-foreground'
+                    ? 'bg-white border-white text-primary'
+                    : 'bg-muted border-muted text-muted-foreground'
                 }`}
+                style={num <= step ? { background: 'linear-gradient(135deg, #ff4b2b 0%, #ff9100 16%, #ffe600 33%, #4cd964 50%, #2196f3 66%, #7c4dff 83%, #e040fb 100%)', color: '#fff', border: 'none' } : {}}
               >
                 {num}
               </div>
               {num < 3 && (
                 <div
-                  className={`flex-1 h-1 mx-2 ${
-                    num < step ? 'bg-primary' : 'bg-muted'
-                  }`}
+                  className="flex-1 h-2 mx-2 rounded-full"
+                  style={num < step
+                    ? { background: 'linear-gradient(90deg, #ff4b2b 0%, #ff9100 16%, #ffe600 33%, #4cd964 50%, #2196f3 66%, #7c4dff 83%, #e040fb 100%)' }
+                    : { background: '#e5e7eb' }} // Tailwind's bg-muted
                 />
               )}
             </div>
@@ -284,7 +287,15 @@ export default function RegisterPage() {
         </div>
       </div>
 
-      <Card className="border-2 border-primary/30">
+      <Card className={`border-2 border-primary/30 ${
+        step === 1
+          ? 'bg-[#ffe6ec]/60' // pastel pink
+          : step === 2
+          ? 'bg-[#e6f7ff]/60' // pastel blue
+          : step === 3
+          ? 'bg-[#e6ffe6]/60' // pastel green
+          : ''
+      }`}>
         <CardHeader>
           <CardTitle className="text-3xl">
             {step === 1 && 'Your Information'}

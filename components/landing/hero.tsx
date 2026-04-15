@@ -13,7 +13,7 @@ import { motion } from 'framer-motion';
 
 function LandingHero() {
   return (
-    <section className="relative w-full min-h-[70vh] flex items-center justify-center overflow-hidden">
+    <section className="relative w-full min-h-[70vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#ffe6ec]/60 via-[#e6f7ff]/60 to-[#e6ffe6]/60">
       {/* Villa Kathreyna aerial view as background */}
       <Image
         src="/villa_kathreyna_view.jpg"

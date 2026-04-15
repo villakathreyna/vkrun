@@ -36,23 +36,28 @@ export default function Countdown() {
 
   return (
     <div className="flex flex-col items-center">
-      {/* Rainbow accent */}
-      <div className="flex mb-2">
-        <div className="h-2 w-8 rounded-l-full bg-[#e94057]" />
-        <div className="h-2 w-8 bg-[#f27121]" />
-        <div className="h-2 w-8 bg-[#f9d423]" />
-        <div className="h-2 w-8 bg-[#e6c97a]" />
-        <div className="h-2 w-8 rounded-r-full bg-[#b6a04c]" />
+      {/* Full rainbow accent */}
+      <div className="flex mb-2 w-full max-w-xs overflow-hidden rounded-full">
+        <div className="h-2 flex-1" style={{ background: 'linear-gradient(90deg, #e94057 0%, #f27121 16%, #ffe600 33%, #4cd964 50%, #2196f3 66%, #7c4dff 83%, #e040fb 100%)' }} />
       </div>
       <div className="flex gap-3 md:gap-5">
-        {blocks.map((b) => (
+        {blocks.map((b, i) => (
           <div key={b.label} className="flex flex-col items-center">
             <div className="bg-[#1a2e1a]/90 border-2 border-[#e6c97a] rounded-lg w-16 h-16 md:w-20 md:h-20 flex items-center justify-center shadow-lg">
-              <span className={`text-2xl md:text-3xl font-bold text-[#e6c97a] ${cinzel.variable} font-cinzel`} style={{ fontFamily: 'Cinzel Decorative, Cinzel, serif' }}>
+              <span className={`text-2xl md:text-3xl font-extrabold text-[#e6c97a] drop-shadow-lg ${cinzel.variable} font-cinzel`} style={{ fontFamily: 'Cinzel Decorative, Cinzel, serif', letterSpacing: '0.05em' }}>
                 {String(b.value).padStart(2, '0')}
               </span>
             </div>
-            <span className={`text-xs md:text-sm text-[#e6c97a]/90 mt-1.5 uppercase tracking-wider ${cinzel.variable} font-cinzel`}>
+            <span className={`text-sm md:text-base font-bold mt-2 uppercase tracking-widest px-2 py-0.5 rounded-full`} style={{
+              color: '#fff',
+              background: [
+                'linear-gradient(90deg, #e94057 0%, #f27121 100%)', // Days
+                'linear-gradient(90deg, #f27121 0%, #ffe600 100%)', // Hours
+                'linear-gradient(90deg, #4cd964 0%, #2196f3 100%)', // Minutes
+                'linear-gradient(90deg, #7c4dff 0%, #e040fb 100%)', // Seconds
+              ][i],
+              boxShadow: '0 2px 8px 0 rgba(0,0,0,0.10)'
+            }}>
               {b.label}
             </span>
           </div>

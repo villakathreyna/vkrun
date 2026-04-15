@@ -1,5 +1,6 @@
 'use client';
 
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -24,11 +25,11 @@ export default function SocialFollow() {
 
   return (
     <motion.section
+      className="py-16 md:py-24 bg-gradient-to-b from-[#e6f7ff]/60 via-[#e6ffe6]/60 to-[#fffbe6]/60"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.8, ease: 'easeOut' }}
-      className="py-16 md:py-24 bg-gradient-to-b from-secondary/5 via-transparent to-primary/5"
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="space-y-16">
@@ -117,7 +118,7 @@ export default function SocialFollow() {
               © 2026 Spectrum of Strength Run. Powered by Villa Kathreyna Events.
             </p>
             <p className="text-xs text-muted-foreground">
-              For inquiries, contact: events@villakathreyna.com | 0977 627 1360
+              For inquiries, contact: book@villakathreyna.com | 0977 627 1360
             </p>
           </div>
         </div>

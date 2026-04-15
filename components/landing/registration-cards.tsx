@@ -1,13 +1,21 @@
 'use client';
 
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cinzel } from '@/components/fonts';
+import { motion } from 'framer-motion';
 
 export default function RegistrationCards() {
   return (
-    <section className="py-16 md:py-24 bg-background">
+    <motion.section
+      className="py-16 md:py-24 bg-gradient-to-b from-[#fffbe6]/60 via-[#ffe6ec]/60 to-[#e6f7ff]/60"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.8, ease: 'easeOut' }}
+    >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="space-y-12">
           {/* Section header */}
@@ -89,6 +97,6 @@ export default function RegistrationCards() {
           </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }
