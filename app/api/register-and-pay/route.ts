@@ -51,27 +51,6 @@ export async function POST(request: NextRequest) {
     }
 
     // Create registration with payment fields
-      .from('registrations')
-      .insert({
-        first_name: registration.firstName,
-        last_name: registration.lastName,
-        email: registration.email,
-        phone: registration.phone,
-        address: registration.address,
-        birthday: registration.birthday,
-        gender: registration.gender === 'specify' ? registration.genderSpecify : registration.gender,
-        distance_category: registration.distanceCategory,
-        price_php: registration.pricePHP,
-        entitlement_size: registration.entitlementSize,
-        finisher_shirt: !!registration.finisherShirt,
-        status: 'pending',
-        amount_php: amount,
-        payment_method: paymentMethod,
-        payment_proof_url: paymentProofUrl,
-        verification_status: 'pending',
-      })
-      .select()
-      .single();
     const { data: reg, error: regError } = await supabase
       .from('registrations')
       .insert({
@@ -102,6 +81,7 @@ export async function POST(request: NextRequest) {
     const registrationId = reg.id;
 
     // Send confirmation email, rollback registration if it fails
+    try {
       await sendEmail({
         to: registration.email,
         subject: 'Villa Kathreyna Run: Spectrum of Strength - A Pride & Fiesta Run 2026 Registration Receipt',
@@ -116,6 +96,10 @@ export async function POST(request: NextRequest) {
           distanceCategory: registration.distanceCategory,
           pricePHP: registration.pricePHP,
           finisherShirt: typeof registration.finisherShirt !== 'undefined' ? registration.finisherShirt : false,
+          entitlementSize: registration.entitlementSize,
+          emergencyContactName: registration.emergencyContactName,
+          emergencyContactNumber: registration.emergencyContactNumber,
+          team: registration.team,
         },
         payment: {
           method: paymentMethod === 'gcash' ? 'GCash' : 'BDO Savings Account',
@@ -123,6 +107,11 @@ export async function POST(request: NextRequest) {
           date: new Date().toLocaleString('en-PH', { timeZone: 'Asia/Manila' }),
         },
       });
+    } catch (e) {
+      // Cleanup: delete the registration if email fails
+      await supabase.from('registrations').delete().eq('id', registrationId);
+      return NextResponse.json({ error: 'Failed to send confirmation email', details: (e as Error).message }, { status: 500 });
+    }
     try {
       await sendEmail({
         to: registration.email,

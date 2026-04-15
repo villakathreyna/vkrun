@@ -206,7 +206,16 @@ export default function RegisterPage() {
         method: 'POST',
         body: uploadFormData,
       });
-      const data = await response.json();
+      let data;
+      try {
+        data = await response.clone().json();
+      } catch (jsonErr) {
+        console.error('Failed to parse JSON from /api/register-and-pay:', jsonErr);
+        setError('Unexpected server response. Please try again.');
+        setIsLoading(false);
+        return;
+      }
+      console.log('Register API response:', response.status, data);
       if (!response.ok) {
         if (data.error && data.error.includes('already been used to register')) {
           setError('This email has already been used to register. Please use a different email.');
@@ -221,6 +230,7 @@ export default function RegisterPage() {
       // Success!
       setStep(4); // Show confirmation/receipt step
     } catch (err) {
+      console.error('Registration submit error:', err);
       setError('An error occurred. Please try again.');
       setIsLoading(false);
     }
