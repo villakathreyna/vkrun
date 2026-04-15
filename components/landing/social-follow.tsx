@@ -80,18 +80,22 @@ export default function SocialFollow() {
               ))}
             </div>
             {/* Promotional Video */}
-            <div className="flex flex-col items-center justify-center mt-10">
-              <div className="w-full max-w-2xl aspect-video rounded-xl overflow-hidden shadow-lg" style={{ minWidth: 320 }}>
-                <iframe
-                  src="https://player.vimeo.com/video/1156815617?autoplay=1&loop=1"
-                  allow="autoplay; fullscreen; picture-in-picture"
-                  allowFullScreen
-                  title="Villa Kathreyna Promo Video"
-                  className="w-full h-full min-w-[320px]"
-                  style={{ minHeight: 320, minWidth: 320 }}
-                ></iframe>
-              </div>
-            </div>
+
+          <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-black" style={{ aspectRatio: "16 / 9" }}>
+            {/* Vimeo Embed - autoplay with sound when visible */}
+            <iframe
+              src="https://player.vimeo.com/video/1156815617?autoplay=1&muted=0&title=0&byline=0&portrait=0"
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowFullScreen
+              className="w-full h-full"
+              style={{ border: "none", display: "block" }}
+              loading="lazy"
+            />
+
+            {/* Gold Border Accent */}
+            <div className="absolute inset-0 rounded-2xl border-2 border-[#C5A028] pointer-events-none shadow-lg" />
+          </div>
+
           </div>
 
           {/* Social media section */}
