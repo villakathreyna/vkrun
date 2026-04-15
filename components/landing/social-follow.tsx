@@ -11,8 +11,21 @@ export default function SocialFollow() {
   const sponsors = [
     {
       name: 'Villa Kathreyna',
-      image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/v1-typo-transparent-vtxr9fQiNnwwmmbmnYknmtSjHIzqn3.png',
+      image: '/vk_logo.png',
       url: 'https://villakathreyna.com',
+      spiel: 'Villa Kathreyna Event Place & Resort is a premier events and leisure destination in Planza, San Fernando, Camarines Sur. Experience the beauty of Bicol as you run through scenic trails and roads, finishing at the resort with post-race celebrations.'
+    },
+    {
+      name: 'La Bella Café & Resto Bar',
+      image: '/labella_logo.png',
+      url: 'https://www.facebook.com/labellacaferestobar',
+      spiel: 'La Bella Café & Resto Bar offers a cozy ambiance and delicious cuisine, perfect for post-run relaxation and celebrations. Visit us for a taste of Bicol hospitality!'
+    },
+    {
+      name: 'RKreatioNs',
+      image: '/rkreations.png',
+      url: 'https://www.facebook.com/rkreationscatering',
+      spiel: 'RKreatioNs is your go-to for creative catering and event styling, making every celebration memorable. Proud partner of the Spectrum of Strength Run!'
     },
   ];
 
@@ -33,48 +46,49 @@ export default function SocialFollow() {
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="space-y-16">
-          {/* Hosted By & Promotional Video section */}
+          {/* Hosts & Partners section */}
           <div className="space-y-8">
             <div className="text-center space-y-4">
-              <h2 className={`text-3xl md:text-4xl font-bold text-foreground ${cinzel.variable} font-cinzel`}>Hosted By</h2>
-              <p className="text-lg text-foreground font-serif font-bold">Villa Kathreyna Event Place & Resort</p>
+              <h2 className={`text-3xl md:text-4xl font-bold text-foreground ${cinzel.variable} font-cinzel`}>Hosts & Partners</h2>
               <p className="text-muted-foreground font-serif max-w-2xl mx-auto">
-                Nestled in Planza, San Fernando, Camarines Sur, Villa Kathreyna is a premier events and leisure destination. Experience the beauty of Bicol as you run through scenic trails and roads, finishing at the resort with post-race celebrations.<br /><br />
-                A wellness and inclusivity run celebrating Fiesta Month and Pride Month — promoting tourism, community, and strength through running.
+                Meet our event hosts and partners who make the Spectrum of Strength Run possible:
               </p>
             </div>
-            <div className="flex flex-col md:flex-row items-center justify-center gap-8">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-12">
               {sponsors.map((sponsor) => (
-                <Link
-                  key={sponsor.name}
-                  href={sponsor.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:opacity-80 transition-opacity"
-                >
-                  <div className="h-24 w-auto relative flex items-center justify-center">
-                    <Image
-                      src={sponsor.image}
-                      alt={sponsor.name}
-                      width={200}
-                      height={80}
-                      style={{ width: 'auto', height: '100%' }}
-                      className="object-contain"
-                    />
-                  </div>
-                </Link>
+                <div key={sponsor.name} className="flex flex-col items-center max-w-xs text-center">
+                  <Link
+                    href={sponsor.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-80 transition-opacity"
+                  >
+                    <div className="h-36 w-auto relative flex items-center justify-center mb-4">
+                      <Image
+                        src={sponsor.image}
+                        alt={sponsor.name}
+                        width={320}
+                        height={140}
+                        style={{ width: 'auto', height: '100%' }}
+                        className="object-contain"
+                      />
+                    </div>
+                  </Link>
+                  <p className="font-bold text-lg text-foreground mb-1">{sponsor.name}</p>
+                  <p className="text-muted-foreground text-sm font-serif">{sponsor.spiel}</p>
+                </div>
               ))}
             </div>
             {/* Promotional Video */}
             <div className="flex flex-col items-center justify-center mt-10">
-              <div className="w-full max-w-2xl aspect-video rounded-xl overflow-hidden shadow-lg">
+              <div className="w-full max-w-2xl aspect-video rounded-xl overflow-hidden shadow-lg" style={{ minWidth: 320 }}>
                 <iframe
                   src="https://player.vimeo.com/video/1156815617?autoplay=1&loop=1"
                   allow="autoplay; fullscreen; picture-in-picture"
                   allowFullScreen
                   title="Villa Kathreyna Promo Video"
-                  className="w-full h-full"
-                  style={{ minHeight: 320 }}
+                  className="w-full h-full min-w-[320px]"
+                  style={{ minHeight: 320, minWidth: 320 }}
                 ></iframe>
               </div>
             </div>

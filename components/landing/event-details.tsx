@@ -17,7 +17,10 @@ function PosterSection() {
     >
       <div className="max-w-2xl w-full flex flex-col items-center">
         <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-[#e6c97a]/60">
-          <Image src="/vkposter.png" alt="Villa Kathreyna Run Poster" width={600} height={900} className="w-full h-auto" />
+          <div className="relative w-full flex flex-col items-center">
+            <Image src="/vkposter.png" alt="Villa Kathreyna Run Poster" width={600} height={900} className="w-full h-auto" />
+            <Image src="/vk_logo.png" alt="Villa Kathreyna Logo" width={120} height={60} className="absolute bottom-4 right-4 opacity-90 drop-shadow-xl" />
+          </div>
         </div>
       </div>
     </motion.section>
