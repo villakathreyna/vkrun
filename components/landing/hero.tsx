@@ -47,14 +47,14 @@ function LandingHero() {
         </div>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link href="/register">
-            <Button size="lg" className="bg-[#e6c97a] hover:bg-[#d4b44c] text-[#1a2e1a] px-10 text-lg font-bold uppercase tracking-widest shadow-lg border-2 border-[#e6c97a]">
+            <Button size="lg" className="bg-[#e6c97a] hover:bg-[#d4b44c] text-[#1a2e1a] px-16 py-6 text-2xl font-extrabold uppercase tracking-widest shadow-2xl border-4 border-[#e6c97a] rounded-2xl scale-105 hover:scale-110 duration-200">
               Register Now
             </Button>
           </Link>
           <Link href="#categories">
             <Button
               size="lg"
-              className="bg-[#1a2e1a]/90 hover:bg-[#1a2e1a] text-[#e6c97a] px-10 text-lg font-bold uppercase tracking-widest shadow-lg border-2 border-[#e6c97a] transition-colors duration-200"
+              className="bg-[#1a2e1a]/90 hover:bg-[#1a2e1a] text-[#e6c97a] px-16 py-6 text-2xl font-extrabold uppercase tracking-widest shadow-2xl border-4 border-[#e6c97a] rounded-2xl scale-105 hover:scale-110 duration-200 transition-colors"
               style={{ backdropFilter: 'blur(2px)' }}
             >
               View Categories
