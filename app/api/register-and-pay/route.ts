@@ -80,38 +80,6 @@ export async function POST(request: NextRequest) {
     }
     const registrationId = reg.id;
 
-    // Send confirmation email, rollback registration if it fails
-    try {
-      await sendEmail({
-        to: registration.email,
-        subject: 'Villa Kathreyna Run: Spectrum of Strength - A Pride & Fiesta Run 2026 Registration Receipt',
-        registrant: {
-          firstName: registration.firstName,
-          lastName: registration.lastName,
-          email: registration.email,
-          phone: registration.phone,
-          address: registration.address,
-          birthday: registration.birthday,
-          gender: registration.genderSpecify || registration.gender,
-          distanceCategory: registration.distanceCategory,
-          pricePHP: registration.pricePHP,
-          finisherShirt: typeof registration.finisherShirt !== 'undefined' ? registration.finisherShirt : false,
-          entitlementSize: registration.entitlementSize,
-          emergencyContactName: registration.emergencyContactName,
-          emergencyContactNumber: registration.emergencyContactNumber,
-          team: registration.team,
-        },
-        payment: {
-          method: paymentMethod === 'gcash' ? 'GCash' : 'BDO Savings Account',
-          amount: Number(amount),
-          date: new Date().toLocaleString('en-PH', { timeZone: 'Asia/Manila' }),
-        },
-      });
-    } catch (e) {
-      // Cleanup: delete the registration if email fails
-      await supabase.from('registrations').delete().eq('id', registrationId);
-      return NextResponse.json({ error: 'Failed to send confirmation email', details: (e as Error).message }, { status: 500 });
-    }
     try {
       await sendEmail({
         to: registration.email,

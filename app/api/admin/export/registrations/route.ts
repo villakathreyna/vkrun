@@ -34,13 +34,15 @@ export async function GET(request: NextRequest) {
       'Gender',
       'Team',
       'Distance',
+      'Entitlement Size',
       'Finisher Shirt',
+      'Amount Due',
       'Amount Paid',
-      'Status',
-      'Payment Method',
-      'Payment Proof URL',
-      'Verification Status',
+      'Payment Verification',
+      'Proof of Payment',
       'Registered',
+      'Emergency Contact Name',
+      'Emergency Contact Number',
     ];
 
     function computeAge(birthday) {
@@ -71,13 +73,15 @@ export async function GET(request: NextRequest) {
       reg.gender || '',
       reg.team || '',
       reg.distance_category,
+      reg.entitlement_size || '',
       reg.finisher_shirt ? 'Yes' : 'No',
-      getAmount(reg).toLocaleString('en-US', { minimumFractionDigits: 2 }),
-      reg.status,
-      reg.payment_method || '',
-      reg.payment_proof_url || '',
+      reg.price_php ? Number(reg.price_php).toLocaleString('en-US', { minimumFractionDigits: 2 }) : '',
+      reg.amount_php ? Number(reg.amount_php).toLocaleString('en-US', { minimumFractionDigits: 2 }) : '',
       reg.verification_status || '',
+      reg.payment_proof_url || '',
       new Date(reg.created_at).toLocaleDateString(),
+      reg.emergency_contact_name || '',
+      reg.emergency_contact_number || '',
     ]);
 
     const csv = [

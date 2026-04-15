@@ -30,9 +30,21 @@ export async function sendEmail({ to, subject, registrant, payment }: {
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
       <div style="background: #1e293b; color: #fff; padding: 24px 32px;">
-        <h2 style="margin: 0;">Villa Kathreyna Run: Spectrum of Strength - A Pride & Fiesta Run 2026 Registration Receipt</h2>
+        <h2 style="margin: 0;">🏳️‍🌈 Villa Kathreyna Run: Spectrum of Strength - A Pride & Fiesta Run 2026 Registration Receipt 🏃‍♂️</h2>
       </div>
       <div style="padding: 24px 32px;">
+        <div style="background: #f9fafb; border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; text-align: center;">
+          <h2 style="margin: 0 0 8px 0; font-size: 1.3em;">🎉 Event Details</h2>
+          <div style="font-size: 1.1em; line-height: 1.5;">
+            <b>Villa Kathreyna Run</b> <span style="font-size:1.2em;">🏃‍♀️🏳️‍🌈</span><br/>
+            Spectrum of Strength<br/>
+            <b>A Pride & Fiesta Run 2026</b> <span style="font-size:1.2em;">🎊</span><br/>
+            <b>June 21, 2026, 5:00 AM</b> <span style="font-size:1.2em;">⏰</span><br/>
+            <br/>
+            <b>Villa Kathreyna Event Place & Resort</b> <span style="font-size:1.2em;">📍</span><br/>
+            Planza, San Fernando, Camarines Sur
+          </div>
+        </div>
         <h3 style="margin-top: 0;">Registrant Details</h3>
         <table style="width: 100%; border-collapse: collapse;">
           <tr><td><b>Name:</b></td><td>${registrant.firstName} ${registrant.lastName}</td></tr>
@@ -55,7 +67,7 @@ export async function sendEmail({ to, subject, registrant, payment }: {
           <tr><td><b>Date:</b></td><td>${payment.date}</td></tr>
         </table>
         <div style="margin-top: 32px; font-size: 1.1em; color: #16a34a;">
-          <b>Thank you for registering!<br/>See you at the event!</b>
+          <b>Thank you for registering! <span style="font-size:1.2em;">🎽</span><br/>See you at the event! <span style="font-size:1.2em;">🥳</span></b>
         </div>
       </div>
       <div style="background: #f1f5f9; color: #64748b; padding: 16px 32px; font-size: 0.95em; text-align: center;">

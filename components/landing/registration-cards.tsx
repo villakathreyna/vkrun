@@ -76,7 +76,7 @@ export default function RegistrationCards() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <CardDescription className="text-foreground/70">
-                  Receive confirmation email with your race bib number and event details
+                  Receive confirmation email with your receipt and event details
                 </CardDescription>
                 <p className="text-sm font-semibold text-foreground">Get ready to run!</p>
               </CardContent>
