@@ -12,7 +12,7 @@ export default function SocialFollow() {
     {
       name: 'Villa Kathreyna',
       image: '/vk_logo.png',
-      url: 'https://villakathreyna.com',
+      url: 'https://www.facebook.com/villakathreyna',
       spiel: 'Villa Kathreyna Event Place & Resort is a premier events and leisure destination in Planza, San Fernando, Camarines Sur. Experience the beauty of Bicol as you run through scenic trails and roads, finishing at the resort with post-race celebrations.'
     },
     {
@@ -30,10 +30,10 @@ export default function SocialFollow() {
   ];
 
   const socialLinks = [
-    { label: 'Villa Kathreyna', url: 'https://www.facebook.com/villakathreyna', icon: '👍' },
-    { label: 'Villa Kathreyna Events', url: 'https://www.facebook.com/villakathreynaevents', icon: '🎉' },
-    { label: 'Labella Cafe RestoBar', url: 'https://www.facebook.com/labellacaferestobar', icon: '☕' },
-    { label: 'RKreations Catering', url: 'https://www.facebook.com/rkreationscatering', icon: '🍽️' },
+    { label: 'Villa Kathreyna Event Place & Resort', url: 'https://www.facebook.com/villakathreyna', icon: '🏠' },
+    { label: 'La Bella Café & Resto Bar', url: 'https://www.facebook.com/labellacaferestobar', icon: '☕' },
+    { label: 'Villa Kathreyna Run - Pride & Fiesta Run 2026', url: 'https://www.facebook.com/villakathreynaevents', icon: '🏳️‍🌈' },
+    { label: 'RKreatioNs Event Styling & Catering Services', url: 'https://www.facebook.com/rkreationscatering', icon: '🍽️' },
   ];
 
   return (

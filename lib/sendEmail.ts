@@ -45,6 +45,21 @@ export async function sendEmail({ to, subject, registrant, payment }: {
             Planza, San Fernando, Camarines Sur
           </div>
         </div>
+
+        <!-- Social Media Invitation -->
+        <div style="background: #fffbe6; border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; text-align: center; border: 1px solid #ffe066;">
+          <h3 style="margin: 0 0 8px 0; font-size: 1.1em; color: #c47f00;">📢 Stay Connected!</h3>
+          <p style="margin: 0 0 8px 0; font-size: 1em; color: #7c4700;">
+            For more updates, photos, and announcements, follow & like our pages:
+          </p>
+          <div style="display: flex; flex-direction: column; gap: 6px; align-items: center; font-size: 1em;">
+            <a href="https://www.facebook.com/villakathreyna" style="color: #1877f2; text-decoration: none;" target="_blank">🏠 Villa Kathreyna Event Place & Resort</a>
+            <a href="https://www.facebook.com/labellacaferestobar" style="color: #1877f2; text-decoration: none;" target="_blank">☕ La Bella Café & Resto Bar</a>
+            <a href="https://www.facebook.com/villakathreynaevents" style="color: #1877f2; text-decoration: none;" target="_blank">🏳️‍🌈 Villa Kathreyna Run - Pride & Fiesta Run 2026</a>
+            <a href="https://www.facebook.com/rkreationscatering" style="color: #1877f2; text-decoration: none;" target="_blank">🍽️ RKreatioNs Event Styling & Catering Services</a>
+          </div>
+        </div>
+
         <h3 style="margin-top: 0;">Registrant Details</h3>
         <table style="width: 100%; border-collapse: collapse;">
           <tr><td><b>Name:</b></td><td>${registrant.firstName} ${registrant.lastName}</td></tr>
