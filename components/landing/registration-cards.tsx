@@ -32,16 +32,16 @@ export default function RegistrationCards() {
             <Card className="border-2 border-primary/30 hover:border-primary/60 transition-colors">
               <CardHeader className="space-y-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
-                  <span className="text-2xl font-bold text-primary-foreground">1</span>
+                  <span className={`text-2xl font-bold text-primary-foreground ${cinzel.variable} font-cinzel`}>1</span>
                 </div>
                 <CardTitle className={`text-foreground ${cinzel.variable} font-cinzel`}>Fill Your Details</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <CardDescription className="text-foreground/70">
+                <CardDescription className="text-foreground/70 font-serif">
                   Provide your personal information and choose your preferred race distance
                 </CardDescription>
                 <Link href="/register">
-                  <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary/10">
+                  <Button variant="outline" className={`w-full border-primary text-primary hover:bg-primary/10 ${cinzel.variable} font-cinzel`}>
                     Start Registration
                   </Button>
                 </Link>
@@ -52,15 +52,15 @@ export default function RegistrationCards() {
             <Card className="border-2 border-secondary/30 hover:border-secondary/60 transition-colors">
               <CardHeader className="space-y-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-secondary to-accent rounded-lg flex items-center justify-center">
-                  <span className="text-2xl font-bold text-secondary-foreground">2</span>
+                  <span className={`text-2xl font-bold text-secondary-foreground ${cinzel.variable} font-cinzel`}>2</span>
                 </div>
                 <CardTitle className={`text-foreground ${cinzel.variable} font-cinzel`}>Submit Payment</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <CardDescription className="text-foreground/70">
+                <CardDescription className="text-foreground/70 font-serif">
                   Upload proof of payment and reference number to verify your registration
                 </CardDescription>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground font-serif">
                   Accepted payment methods: Bank Transfer, GCash, PayMaya
                 </p>
               </CardContent>
@@ -70,15 +70,15 @@ export default function RegistrationCards() {
             <Card className="border-2 border-accent/30 hover:border-accent/60 transition-colors">
               <CardHeader className="space-y-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-accent to-primary rounded-lg flex items-center justify-center">
-                  <span className="text-2xl font-bold text-accent-foreground">3</span>
+                  <span className={`text-2xl font-bold text-accent-foreground ${cinzel.variable} font-cinzel`}>3</span>
                 </div>
                 <CardTitle className={`text-foreground ${cinzel.variable} font-cinzel`}>Confirmation</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <CardDescription className="text-foreground/70">
+                <CardDescription className="text-foreground/70 font-serif">
                   Receive confirmation email with your receipt and event details
                 </CardDescription>
-                <p className="text-sm font-semibold text-foreground">Get ready to run!</p>
+                <p className="text-sm font-semibold text-foreground font-serif">Get ready to run!</p>
               </CardContent>
             </Card>
           </div>
@@ -90,7 +90,7 @@ export default function RegistrationCards() {
               Secure your spot today. Limited slots available for each distance category.
             </p>
             <Link href="/register">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground px-8">
+              <Button size="lg" className={`bg-primary hover:bg-primary/90 text-primary-foreground px-8 ${cinzel.variable} font-cinzel`}>
                 Register Now
               </Button>
             </Link>

@@ -1,29 +1,82 @@
 
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { cinzel } from '@/components/fonts';
 
 // Event Poster Section
 function PosterSection() {
+  const [modalImg, setModalImg] = useState<string | null>(null);
+
   return (
-    <motion.section
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.8, ease: 'easeOut' }}
-      className="py-12 md:py-20 bg-gradient-to-b from-[#f9f5ff] via-[#e6c97a]/10 to-[#f9f5ff] flex justify-center"
-    >
-      <div className="max-w-2xl w-full flex flex-col items-center">
-        <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-[#e6c97a]/60">
-          <div className="relative w-full flex flex-col items-center">
-            <Image src="/vkposter.png" alt="Villa Kathreyna Run Poster" width={600} height={900} className="w-full h-auto" />
-            <Image src="/vk_logo.png" alt="Villa Kathreyna Logo" width={120} height={60} className="absolute bottom-4 right-4 opacity-90 drop-shadow-xl" />
+    <>
+      {/* Modal for enlarged image */}
+      {modalImg && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+          onClick={() => setModalImg(null)}
+        >
+          <div className="relative max-w-full max-h-full p-4" onClick={e => e.stopPropagation()}>
+            <button
+              className="absolute top-2 right-2 text-white text-3xl font-bold bg-black/60 rounded-full px-3 py-1 hover:bg-black/80 transition"
+              onClick={() => setModalImg(null)}
+              aria-label="Close"
+            >
+              &times;
+            </button>
+            <img
+              src={modalImg}
+              alt="Poster Preview"
+              className="max-h-[90vh] max-w-[90vw] rounded-2xl shadow-2xl border-4 border-[#e6c97a]/80 bg-white"
+            />
           </div>
         </div>
-      </div>
-    </motion.section>
+      )}
+      <motion.section
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+        className="py-12 md:py-20 bg-gradient-to-b from-[#f9f5ff] via-[#e6c97a]/10 to-[#f9f5ff] flex justify-center"
+      >
+        <div className="max-w-4xl w-full flex flex-col md:flex-row items-center gap-8 justify-center">
+          {/* Main VK Poster */}
+          <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-[#e6c97a]/60 flex-shrink-0 cursor-pointer group" onClick={() => setModalImg('/vkposter.png')}>
+            <div className="relative w-full flex flex-col items-center">
+              <Image 
+                src="/vkposter.png" 
+                alt="Villa Kathreyna Run Poster" 
+                width={400} 
+                height={600} 
+                className="w-[260px] md:w-[340px] lg:w-[400px] h-auto group-hover:brightness-90 transition"
+                priority
+              />
+              <Image 
+                src="/vk_logo.png" 
+                alt="Villa Kathreyna Logo" 
+                width={80} 
+                height={40} 
+                className="absolute bottom-4 right-4 opacity-90 drop-shadow-xl pointer-events-none" 
+              />
+            </div>
+          </div>
+          {/* VK Promo Poster */}
+          <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-[#e6c97a]/60 flex-shrink-0 cursor-pointer group" onClick={() => setModalImg('/vkpromo.png')}>
+            <div className="relative w-full flex flex-col items-center">
+              <Image 
+                src="/vkpromo.png" 
+                alt="Villa Kathreyna Run Promo Poster" 
+                width={400} 
+                height={600} 
+                className="w-[260px] md:w-[340px] lg:w-[400px] h-auto group-hover:brightness-90 transition"
+                priority
+              />
+            </div>
+          </div>
+        </div>
+      </motion.section>
+    </>
   );
 }
 
